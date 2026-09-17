@@ -72,6 +72,8 @@ export const VideoModal: React.FC<VideoModalProps> = ({ product, onClose }) => {
             {!nativeVideoError ? (
               <video
                 src={nativeVideoSrc}
+                poster={product.image_url}
+                preload="auto"
                 controls
                 autoPlay
                 playsInline
