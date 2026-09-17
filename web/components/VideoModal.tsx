@@ -110,6 +110,7 @@ export const VideoModal: React.FC<VideoModalProps> = ({ product, onClose }) => {
             <div className="relative w-full max-w-[325px] aspect-[9/16] overflow-hidden rounded-2xl bg-black shadow-2xl border border-slate-800 flex items-center justify-center">
               {playMode === "native" && !nativeVideoError ? (
                 <video
+                  key={product.product_id}
                   src={nativeVideoSrc}
                   poster={product.image_url}
                   controls
