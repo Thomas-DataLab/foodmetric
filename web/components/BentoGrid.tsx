@@ -209,7 +209,7 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) =
       </section>
 
       {/* MODULE 2: SNACK BATTLE (Đấu Trường Ăn Vặt) */}
-      <section className="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs">
+      <section id="snack-battle" className="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs scroll-mt-24">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-50 border border-orange-200 text-orange-600">

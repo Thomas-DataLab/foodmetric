@@ -68,6 +68,35 @@ export const viewport: Viewport = {
   themeColor: "#FFFFFF",
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://foodmetric.vercel.app/#website",
+      "url": "https://foodmetric.vercel.app",
+      "name": "FoodMetric",
+      "description": "Radar Săn Deal & Món Ăn Vặt Hot TikTok Shop Việt Nam",
+      "inLanguage": "vi",
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://foodmetric.vercel.app/#organization",
+      "name": "Food Lén Lút",
+      "url": "https://www.tiktok.com/@foodlenlut",
+      "logo": "https://foodmetric.vercel.app/images/foodlenlut_avatar.jpg",
+      "sameAs": ["https://www.tiktok.com/@foodlenlut"],
+    },
+    {
+      "@type": "ItemList",
+      "name": "Top Món Ăn Vặt Nổ Đơn Nhất TikTok Shop Hôm Nay",
+      "itemListOrder": "https://schema.org/ItemListOrderDescending",
+      "numberOfItems": 17,
+      "url": "https://foodmetric.vercel.app",
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -75,6 +104,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi" className={`${inter.variable} ${lexend.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-screen bg-[#F8FAFC] font-sans text-[#0F172A] antialiased">
         {children}
       </body>

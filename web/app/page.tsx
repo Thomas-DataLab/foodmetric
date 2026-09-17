@@ -7,6 +7,7 @@ import { CategoryTabs } from "@/components/CategoryTabs";
 import { LeaderboardTable } from "@/components/LeaderboardTable";
 import { VideoModal } from "@/components/VideoModal";
 import { RandomSnackModal } from "@/components/RandomSnackModal";
+import { StickyMobileBar } from "@/components/StickyMobileBar";
 import { DashboardData, CategoryFilterId, ProductItem } from "@/types";
 import { formatNumber } from "@/lib/utils";
 import { Flame, Package, Tag, Share2, Check } from "lucide-react";
@@ -128,7 +129,7 @@ export default function HomePage() {
         onOpenRandomSnack={handleOpenRandomSnack}
       />
 
-      <main className="mx-auto flex-1 w-full max-w-container px-4 py-6 sm:px-6 sm:py-8 space-y-6">
+      <main className="mx-auto flex-1 w-full max-w-container px-4 py-6 sm:px-6 sm:py-8 space-y-6 pb-24 md:pb-12">
         {/* Hero Section */}
         <section className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
           <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
@@ -261,32 +262,7 @@ export default function HomePage() {
         onSelectProduct={handleSelectProduct}
       />
 
-      {/* Sticky Bottom Mobile Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-2.5 flex items-center justify-between gap-2 shadow-lg sm:hidden">
-        <button
-          type="button"
-          onClick={handleOpenRandomSnack}
-          className="shrink-0 inline-flex items-center gap-1 rounded-xl border border-orange-200 bg-orange-50 px-2.5 py-1.5 text-xs font-bold text-orange-800 shadow-xs active:scale-95"
-        >
-          🎲 Ăn Gì?
-        </button>
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100 text-sm">
-            🔥
-          </span>
-          <span className="text-xs text-slate-800 font-medium truncate">
-            Deal Hot TikTok @foodlenlut
-          </span>
-        </div>
-        <a
-          href="https://www.tiktok.com/@foodlenlut"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="shrink-0 inline-flex items-center gap-1 rounded-lg bg-orange-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-orange-700 transition-all"
-        >
-          Follow ↗
-        </a>
-      </div>
+
 
       <footer className="mt-12 border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
         <div className="mx-auto max-w-container px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -298,6 +274,9 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Sticky Mobile Action Bar */}
+      <StickyMobileBar onOpenRandomSnack={handleOpenRandomSnack} />
     </div>
   );
 }
