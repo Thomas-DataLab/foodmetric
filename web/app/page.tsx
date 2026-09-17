@@ -7,6 +7,7 @@ import { CategoryTabs } from "@/components/CategoryTabs";
 import { LeaderboardTable } from "@/components/LeaderboardTable";
 import { VideoModal } from "@/components/VideoModal";
 import { RandomSnackModal } from "@/components/RandomSnackModal";
+import { DailyTarotModal } from "@/components/DailyTarotModal";
 import { StickyMobileBar } from "@/components/StickyMobileBar";
 import { DashboardData, CategoryFilterId, ProductItem } from "@/types";
 import { formatNumber } from "@/lib/utils";
@@ -19,16 +20,33 @@ export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState<CategoryFilterId>("all");
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [isRandomModalOpen, setIsRandomModalOpen] = useState<boolean>(false);
+  const [isTarotModalOpen, setIsTarotModalOpen] = useState<boolean>(false);
   const [shareCopied, setShareCopied] = useState<boolean>(false);
 
   const handleSelectProduct = (product: ProductItem | null) => {
     setIsRandomModalOpen(false);
+    setIsTarotModalOpen(false);
     setSelectedProduct(product);
+  };
+
+  const handleSelectProductById = (productId: string) => {
+    setIsTarotModalOpen(false);
+    const found = data?.leaderboard?.find((p) => p.product_id === productId);
+    if (found) {
+      setSelectedProduct(found);
+    }
   };
 
   const handleOpenRandomSnack = () => {
     setSelectedProduct(null);
+    setIsTarotModalOpen(false);
     setIsRandomModalOpen(true);
+  };
+
+  const handleOpenTarot = () => {
+    setSelectedProduct(null);
+    setIsRandomModalOpen(false);
+    setIsTarotModalOpen(true);
   };
 
   const fetchData = async () => {
@@ -127,6 +145,7 @@ export default function HomePage() {
         lastUpdated={data?.metadata.last_updated}
         totalProducts={data?.metadata.total_products_indexed}
         onOpenRandomSnack={handleOpenRandomSnack}
+        onOpenTarot={handleOpenTarot}
       />
 
       <main className="mx-auto flex-1 w-full max-w-container px-4 py-6 sm:px-6 sm:py-8 space-y-6 pb-24 md:pb-12">
@@ -139,6 +158,13 @@ export default function HomePage() {
                   <Flame className="h-3.5 w-3.5 text-orange-600" />
                   Đồ Ăn Vặt Hot Trend TikTok Shop
                 </span>
+                <button
+                  type="button"
+                  onClick={handleOpenTarot}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-purple-200 bg-purple-50/90 px-3 py-1 text-xs font-bold text-purple-700 shadow-xs hover:bg-purple-100 transition-all active:scale-95 cursor-pointer"
+                >
+                  🔮 Quẻ Tarot Hôm Nay
+                </button>
                 <button
                   type="button"
                   onClick={handleOpenRandomSnack}
@@ -262,7 +288,12 @@ export default function HomePage() {
         onSelectProduct={handleSelectProduct}
       />
 
-
+      {/* Daily Tarot Modal */}
+      <DailyTarotModal
+        isOpen={isTarotModalOpen}
+        onClose={() => setIsTarotModalOpen(false)}
+        onSelectProductById={handleSelectProductById}
+      />
 
       <footer className="mt-12 border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
         <div className="mx-auto max-w-container px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -276,7 +307,10 @@ export default function HomePage() {
       </footer>
 
       {/* Sticky Mobile Action Bar */}
-      <StickyMobileBar onOpenRandomSnack={handleOpenRandomSnack} />
+      <StickyMobileBar
+        onOpenRandomSnack={handleOpenRandomSnack}
+        onOpenTarot={handleOpenTarot}
+      />
     </div>
   );
 }

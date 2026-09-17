@@ -10,14 +10,17 @@ interface NavbarProps {
   lastUpdated?: string;
   totalProducts?: number;
   onOpenRandomSnack?: () => void;
+  onOpenTarot?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   searchQuery,
   onSearchChange,
   onOpenRandomSnack,
+  onOpenTarot,
 }) => {
   const [localSearch, setLocalSearch] = useState<string>(searchQuery);
+  const [hasUnreadTarot, setHasUnreadTarot] = useState<boolean>(false);
 
   useEffect(() => {
     setLocalSearch(searchQuery);
@@ -29,6 +32,31 @@ export const Navbar: React.FC<NavbarProps> = ({
     }, 200);
     return () => clearTimeout(timer);
   }, [localSearch, onSearchChange]);
+
+  // Check if tarot has been drawn today
+  useEffect(() => {
+    const checkStatus = () => {
+      try {
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, "0");
+        const d = String(now.getDate()).padStart(2, "0");
+        const todayStr = `${y}-${m}-${d}`;
+        const drawnDate = localStorage.getItem("foodmetric_tarot_drawn_date");
+        setHasUnreadTarot(drawnDate !== todayStr);
+      } catch {
+        setHasUnreadTarot(false);
+      }
+    };
+
+    checkStatus();
+    window.addEventListener("foodmetric_tarot_drawn", checkStatus);
+    window.addEventListener("storage", checkStatus);
+    return () => {
+      window.removeEventListener("foodmetric_tarot_drawn", checkStatus);
+      window.removeEventListener("storage", checkStatus);
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-xs">
@@ -75,12 +103,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Mobile Random Snack Button */}
-          <div className="sm:hidden">
+          {/* Mobile Action Buttons */}
+          <div className="sm:hidden flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={onOpenTarot}
+              className="inline-flex items-center gap-1 rounded-full border border-purple-200 bg-purple-50 hover:bg-purple-100 px-2.5 py-1.5 text-xs font-bold text-purple-700 shadow-xs active:scale-95 transition-all relative cursor-pointer"
+            >
+              <span>🔮 Quẻ Bói</span>
+              {hasUnreadTarot && (
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                </span>
+              )}
+            </button>
             <button
               type="button"
               onClick={onOpenRandomSnack}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-orange-200 bg-orange-50/80 px-2.5 py-1.5 text-xs font-bold text-orange-800 shadow-xs hover:bg-orange-100 transition-all active:scale-95 whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-orange-200 bg-orange-50/80 px-2.5 py-1.5 text-xs font-bold text-orange-800 shadow-xs hover:bg-orange-100 transition-all active:scale-95 whitespace-nowrap cursor-pointer"
             >
               🎲 Hôm Nay Ăn Gì?
             </button>
@@ -115,10 +156,25 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Right Status & CTAs */}
         <div className="flex items-center gap-2 sm:gap-3 justify-between sm:justify-end">
+          {/* Tarot Button */}
+          <button
+            type="button"
+            onClick={onOpenTarot}
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-purple-200 bg-purple-50 hover:bg-purple-100 px-3 py-1.5 text-xs font-bold text-purple-700 active:scale-95 transition-all relative cursor-pointer"
+          >
+            <span>🔮 Quẻ Bói Hôm Nay</span>
+            {hasUnreadTarot && (
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+              </span>
+            )}
+          </button>
+
           <button
             type="button"
             onClick={onOpenRandomSnack}
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-orange-200 bg-orange-50/80 px-3 py-2 text-xs font-bold text-orange-900 shadow-xs hover:bg-orange-100 transition-all active:scale-95 whitespace-nowrap"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-orange-200 bg-orange-50/80 px-3 py-2 text-xs font-bold text-orange-900 shadow-xs hover:bg-orange-100 transition-all active:scale-95 whitespace-nowrap cursor-pointer"
           >
             🎲 Hôm Nay Ăn Gì?
           </button>
