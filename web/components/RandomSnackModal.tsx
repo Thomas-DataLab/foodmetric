@@ -188,15 +188,18 @@ export const RandomSnackModal: React.FC<RandomSnackModalProps> = ({
                 {/* Product Thumbnail with Click to Play Video */}
                 <div
                   onClick={() => {
-                    if (!isSpinning && currentProduct) {
+                    if (currentProduct) {
+                      if (timerRef.current) {
+                        clearTimeout(timerRef.current);
+                        timerRef.current = null;
+                      }
+                      setIsSpinning(false);
                       onSelectProduct(currentProduct);
                       onClose();
                     }
                   }}
                   title="Bấm vào ảnh để xem video KOC"
-                  className={`group/thumb relative h-28 w-28 sm:h-32 sm:w-32 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm ${
-                    !isSpinning ? "cursor-pointer hover:border-purple-400 hover:shadow-md transition-all" : ""
-                  }`}
+                  className="group/thumb relative h-28 w-28 sm:h-32 sm:w-32 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm cursor-pointer hover:border-purple-400 hover:shadow-md transition-all"
                 >
                   {currentProduct.image_url ? (
                     <img
@@ -210,14 +213,12 @@ export const RandomSnackModal: React.FC<RandomSnackModalProps> = ({
                     </div>
                   )}
                   {/* Play icon overlay on hover */}
-                  {!isSpinning && (
-                    <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[1px] opacity-0 group-hover/thumb:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-white">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-600 text-white shadow-lg">
-                        <Play className="h-5 w-5 fill-white ml-0.5" />
-                      </div>
-                      <span className="text-[10px] font-bold">Xem video</span>
+                  <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[1px] opacity-0 group-hover/thumb:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-white">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-600 text-white shadow-lg">
+                      <Play className="h-5 w-5 fill-white ml-0.5" />
                     </div>
-                  )}
+                    <span className="text-[10px] font-bold">Xem video</span>
+                  </div>
                 </div>
 
                 {/* Info */}
