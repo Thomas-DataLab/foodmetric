@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Search, X } from "lucide-react";
+import { openTikTok } from "@/lib/tiktokLauncher";
 
 interface NavbarProps {
   searchQuery: string;
@@ -38,12 +39,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           href="https://www.tiktok.com/@foodlenlut"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={(e) => {
+            e.preventDefault();
+            openTikTok({
+              webUrl: "https://www.tiktok.com/@foodlenlut",
+              creatorHandle: "foodlenlut",
+            });
+          }}
           className="ml-2 inline-flex items-center gap-1 rounded-full bg-white text-orange-600 px-3 py-0.5 text-xs font-bold hover:bg-orange-50 transition-all"
         >
           Ghé Kênh TikTok ↗
         </a>
       </div>
-
       <div className="mx-auto flex max-w-container flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         {/* Brand & Logo */}
         <div className="flex items-center justify-between">
@@ -120,6 +127,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             href="https://www.tiktok.com/@foodlenlut"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => {
+              e.preventDefault();
+              openTikTok({
+                webUrl: "https://www.tiktok.com/@foodlenlut",
+                creatorHandle: "foodlenlut",
+              });
+            }}
             className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-orange-600 px-3.5 py-2 text-xs font-bold text-white shadow-xs hover:bg-orange-700 transition-all whitespace-nowrap"
           >
             🔥 Kênh Food Lén Lút

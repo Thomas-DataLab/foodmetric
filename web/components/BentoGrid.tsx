@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { BentoKPIs, ProductItem } from "@/types";
 import { formatVND, formatNumber } from "@/lib/utils";
-
+import { openTikTok, extractVideoId } from "@/lib/tiktokLauncher";
 interface BentoGridProps {
   kpis: BentoKPIs;
   onSelectProduct?: (product: ProductItem) => void;
@@ -149,6 +149,13 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) =
             href="https://www.tiktok.com/@foodlenlut"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => {
+              e.preventDefault();
+              openTikTok({
+                webUrl: "https://www.tiktok.com/@foodlenlut",
+                creatorHandle: "foodlenlut",
+              });
+            }}
             className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 border border-orange-200 px-3 py-1.5 rounded-full transition-all"
           >
             <span>Lưu Thêm Voucher Toàn Sàn</span>
@@ -183,6 +190,13 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) =
                   href={deal.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openTikTok({
+                      webUrl: deal.url,
+                      productName: deal.title,
+                    });
+                  }}
                   className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 text-white hover:bg-orange-600 px-3 py-1.5 text-xs font-bold transition-all active:scale-95 shadow-xs"
                 >
                   <span>{deal.ctaText}</span>
@@ -470,6 +484,15 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) =
                   href={top_gmv_product.affiliate_url || top_gmv_product.video_url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openTikTok({
+                      webUrl: top_gmv_product.affiliate_url || top_gmv_product.video_url,
+                      videoId: extractVideoId(top_gmv_product.video_url),
+                      productName: top_gmv_product.product_name,
+                      creatorHandle: top_gmv_product.creator_handle,
+                    });
+                  }}
                   className="inline-flex items-center gap-1 rounded-xl bg-orange-600 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-orange-700 active:scale-95 transition-all shadow-xs"
                 >
                   <span>Săn Deal TikTok</span>
@@ -557,6 +580,15 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) =
                   href={fastest_growth_product.affiliate_url || fastest_growth_product.video_url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openTikTok({
+                      webUrl: fastest_growth_product.affiliate_url || fastest_growth_product.video_url,
+                      videoId: extractVideoId(fastest_growth_product.video_url),
+                      productName: fastest_growth_product.product_name,
+                      creatorHandle: fastest_growth_product.creator_handle,
+                    });
+                  }}
                   className="inline-flex items-center gap-1 rounded-xl bg-orange-600 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-orange-700 active:scale-95 transition-all shadow-xs"
                 >
                   <span>Săn Deal TikTok</span>

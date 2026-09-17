@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { ProductItem } from "@/types";
 import { formatVND, formatCompactNumber, formatNumber } from "@/lib/utils";
-
+import { openTikTok } from "@/lib/tiktokLauncher";
 interface VideoModalProps {
   product: ProductItem | null;
   onClose: () => void;
@@ -226,25 +226,40 @@ export const VideoModal: React.FC<VideoModalProps> = ({ product, onClose }) => {
                 href={product.affiliate_url || product.video_url}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openTikTok({
+                    webUrl: product.affiliate_url || product.video_url,
+                    videoId: videoId,
+                    productName: product.product_name,
+                    creatorHandle: product.creator_handle,
+                  });
+                }}
                 className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-orange-600 hover:bg-orange-700 py-3.5 px-6 text-sm sm:text-base font-bold text-white shadow-xs transition-all active:scale-98"
               >
                 <span>🛒 Đặt Mua Ngay Trên TikTok Shop</span>
                 <ExternalLink className="h-4 w-4" />
               </a>
-
               <div className="flex flex-col sm:flex-row gap-3">
                 {product.video_url && (
                   <a
                     href={product.video_url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openTikTok({
+                        webUrl: product.video_url,
+                        videoId: videoId,
+                        productName: product.product_name,
+                      });
+                    }}
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-xs font-bold text-white shadow-xs hover:bg-slate-800 transition-colors text-center"
                   >
                     <span>Mở Trực Tiếp Trên TikTok</span>
                     <ExternalLink className="h-3.5 w-3.5" />
                   </a>
                 )}
-
                 <button
                   type="button"
                   onClick={onClose}

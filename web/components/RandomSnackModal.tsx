@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { X, Store, Eye, ShoppingBag, Play } from "lucide-react";
 import { ProductItem } from "@/types";
 import { formatCompactNumber, formatVND } from "@/lib/utils";
-
+import { openTikTok } from "@/lib/tiktokLauncher";
 interface RandomSnackModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -257,6 +257,14 @@ export const RandomSnackModal: React.FC<RandomSnackModalProps> = ({
                   href={currentProduct.affiliate_url || currentProduct.video_url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openTikTok({
+                      webUrl: currentProduct.affiliate_url || currentProduct.video_url,
+                      productName: currentProduct.product_name,
+                      creatorHandle: currentProduct.creator_handle,
+                    });
+                  }}
                   className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 hover:bg-orange-700 py-3 text-sm font-bold text-white shadow-xs transition-all active:scale-95"
                 >
                   🛒 Mua Ngay TikTok Shop ↗

@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { ProductItem } from "@/types";
 import { formatVND, formatNumber, formatCompactNumber } from "@/lib/utils";
-
+import { openTikTok } from "@/lib/tiktokLauncher";
 interface LeaderboardTableProps {
   products: ProductItem[];
   categoryNames?: Record<string, string>;
@@ -254,6 +254,14 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                       href={item.affiliate_url || item.video_url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        openTikTok({
+                          webUrl: item.affiliate_url || item.video_url,
+                          productName: item.product_name,
+                          creatorHandle: item.creator_handle,
+                        });
+                      }}
                       className="inline-flex items-center gap-1 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold px-3.5 py-2 text-xs shadow-xs active:scale-95 transition-all whitespace-nowrap"
                       title="Đặt mua trên TikTok Shop"
                     >
@@ -344,6 +352,14 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                 href={item.affiliate_url || item.video_url}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openTikTok({
+                    webUrl: item.affiliate_url || item.video_url,
+                    productName: item.product_name,
+                    creatorHandle: item.creator_handle,
+                  });
+                }}
                 className="inline-flex items-center justify-center gap-1 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold px-3 py-2.5 text-xs shadow-xs active:scale-95 transition-all whitespace-nowrap"
               >
                 <span>🛒 Mua Ngay</span>
