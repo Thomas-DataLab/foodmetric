@@ -86,6 +86,13 @@ Lưu trữ số liệu biến động theo từng snapshot 24h:
 - **Typography & Font Strategy**:
   * Chữ hiển thị: **Inter** (tối ưu khả năng đọc văn bản trên màn hình nhỏ).
   * Số liệu tài chính: **Lexend** (thiết kế Tabular Numbers giúp các con số doanh thu, thứ hạng rank không bị nhảy giật khi sort/filter).
+- **Smart TikTok App Launcher & Deep-Linking (`web/lib/tiktokLauncher.ts`)**:
+  * Triệt tiêu bẫy in-app webview trên điện thoại (khi khách vào web từ Facebook, Zalo, Telegram hay Link Bio TikTok `@foodlenlut`).
+  * Tự động phát hiện môi trường:
+    - **Desktop**: Mở tab web thông thường `window.open(url, '_blank')`.
+    - **Android**: Kích hoạt Android Intent URL Scheme (`intent://aweme/detail/{videoId}#Intent;scheme=snssdk1180;package=com.zhiliaoapp.musically;S.browser_fallback_url=...;end;`) bật trực tiếp ứng dụng TikTok hoặc trang cá nhân creator, tự động fallback mượt mà nếu máy chưa cài app.
+    - **iOS**: Kích hoạt Custom URL Scheme `snssdk1180://aweme/detail/{videoId}` hoặc `snssdk1180://user/profile?unique_id=...` kèm bộ hẹn giờ 1.5s fallback về web nếu bị chặn.
+  * Tự động sao chép tên món vào clipboard (`navigator.clipboard.writeText`) trên thiết bị di động để người dùng dán tìm ngay nếu muốn.
 - **Native HD Video Player (`VideoModal.tsx`)**:
   * Chuẩn hóa 100% sang HTML5 Native Video phát trực tiếp các file MP4 H.264 cục bộ (đã loại bỏ hoàn toàn iframe nhúng TikTok do chính sách hạn chế của ByteDance).
   * Tích hợp thuộc tính `poster={product.image_url}` (hiển thị ảnh bìa sắc nét ngay lập tức) và `muted` (tuân thủ chính sách Autoplay Policy của trình duyệt) giúp video phát ngay lập tức khi mở modal, triệt tiêu hoàn toàn màn hình đen hay vòng xoay tải chậm.
