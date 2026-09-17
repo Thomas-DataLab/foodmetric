@@ -24,20 +24,20 @@ const ProductThumbnail: React.FC<{ src: string; alt: string }> = ({ src, alt }) 
 
   if (hasError || !src) {
     return (
-      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/[0.1] bg-[#1F2937] text-slate-400">
-        <ShoppingBag className="h-6 w-6 text-emerald-400" />
+      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-slate-100 text-slate-400">
+        <ShoppingBag className="h-6 w-6 text-emerald-600" />
       </div>
     );
   }
 
   return (
-    <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-white/[0.1] bg-black/40 shadow-md group/img">
+    <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100 shadow-xs group/img">
       <img
         src={src}
         alt={alt}
         loading="lazy"
         onError={() => setHasError(true)}
-        className="h-full w-full object-cover transition-transform duration-500 group-hover/img:scale-115"
+        className="h-full w-full object-cover transition-transform duration-500 group-hover/img:scale-110"
       />
     </div>
   );
@@ -46,27 +46,27 @@ const ProductThumbnail: React.FC<{ src: string; alt: string }> = ({ src, alt }) 
 const RankBadge: React.FC<{ rank: number }> = ({ rank }) => {
   if (rank === 1) {
     return (
-      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-300 to-amber-500 text-[#090D16] font-black text-sm shadow-lg shadow-amber-400/20">
+      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 text-slate-950 font-black text-sm shadow-md shadow-amber-400/20 font-lexend">
         <Award className="h-5 w-5" />
       </div>
     );
   }
   if (rank === 2) {
     return (
-      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-200 to-slate-400 text-[#090D16] font-black text-sm shadow-md shadow-slate-300/20">
+      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-200 to-slate-300 text-slate-800 font-black text-sm shadow-sm font-lexend">
         2
       </div>
     );
   }
   if (rank === 3) {
     return (
-      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-amber-800 text-white font-black text-sm shadow-md shadow-amber-700/20">
+      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-amber-700 text-white font-black text-sm shadow-sm font-lexend">
         3
       </div>
     );
   }
   return (
-    <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.02] text-xs font-mono font-bold text-slate-400">
+    <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-xs font-lexend font-bold text-slate-600">
       #{rank}
     </div>
   );
@@ -78,14 +78,14 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
 }) => {
   if (products.length === 0) {
     return (
-      <div className="rounded-3xl border border-white/[0.08] bg-[#0E131F]/90 p-12 text-center backdrop-blur-xl">
-        <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/[0.04] text-slate-500">
-          <ShoppingBag className="h-7 w-7 text-emerald-400" />
+      <div className="rounded-3xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+        <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+          <ShoppingBag className="h-7 w-7 text-emerald-600" />
         </div>
-        <h3 className="text-base font-bold text-white">
+        <h3 className="text-base font-bold text-slate-900">
           Không tìm thấy món ăn vặt phù hợp
         </h3>
-        <p className="mt-1 text-xs text-slate-400">
+        <p className="mt-1 text-xs text-slate-500">
           Hãy thử đổi từ khóa tìm kiếm hoặc chọn danh mục khác.
         </p>
       </div>
@@ -95,21 +95,21 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
   return (
     <div className="w-full space-y-3">
       <div className="flex items-center justify-between px-1">
-        <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white flex items-center gap-2">
+        <h2 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
           <span>Bảng Xếp Hạng Doanh Thu Ngành Ăn Vặt</span>
-          <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+          <span className="text-xs font-lexend font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
             {products.length} Món Đang Theo Dõi
           </span>
         </h2>
-        <span className="text-xs text-slate-400 hidden sm:block">
+        <span className="text-xs text-slate-500 hidden sm:block">
           Sắp xếp theo: Doanh Thu GMV Ước Tính (24h)
         </span>
       </div>
 
       {/* DESKTOP TABLE VIEW (>= 768px) */}
-      <div className="hidden md:block overflow-hidden rounded-3xl border border-white/[0.08] bg-[#0E131F]/90 backdrop-blur-xl shadow-2xl">
+      <div className="hidden md:block overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-white/[0.08] bg-white/[0.02] text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
+          <thead className="border-b border-slate-200 bg-slate-50/70 text-[11px] font-lexend font-bold uppercase tracking-wider text-slate-500">
             <tr>
               <th scope="col" className="py-4 pl-6 pr-3 w-16 text-center">Hạng</th>
               <th scope="col" className="py-4 px-4">Sản Phẩm & Cửa Hàng</th>
@@ -120,11 +120,11 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
               <th scope="col" className="py-4 pr-6 pl-4 text-center w-36">Hành Động</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/[0.04]">
+          <tbody className="divide-y divide-slate-100">
             {products.map((item) => (
               <tr
                 key={item.product_id}
-                className="group transition-colors hover:bg-white/[0.03]"
+                className="group transition-colors hover:bg-slate-50/80"
               >
                 {/* Rank Badge */}
                 <td className="py-4 pl-6 pr-3 text-center">
@@ -142,21 +142,21 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                     />
                     <div className="min-w-0 flex-1">
                       <h4
-                        className="font-semibold text-white group-hover:text-emerald-300 transition-colors line-clamp-1 leading-snug"
+                        className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-1 leading-snug"
                         title={item.product_name}
                       >
                         {item.product_name}
                       </h4>
-                      <div className="mt-1 flex items-center gap-2 text-xs text-slate-400">
-                        <Store className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                        <span className="truncate max-w-[140px] text-slate-300">{item.shop_name}</span>
+                      <div className="mt-1 flex items-center gap-2 text-xs text-slate-500">
+                        <Store className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                        <span className="truncate max-w-[140px] text-slate-700 font-medium">{item.shop_name}</span>
                         {item.is_shop_official && (
-                          <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-500/20 px-1.5 py-0.2 text-[10px] font-bold text-emerald-400 border border-emerald-500/30">
+                          <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-50 px-1.5 py-0.2 text-[10px] font-bold text-emerald-700 border border-emerald-200">
                             <ShieldCheck className="h-3 w-3" /> Mall
                           </span>
                         )}
                         <span>•</span>
-                        <span className="flex items-center gap-1 text-amber-400 font-mono text-[11px]">
+                        <span className="flex items-center gap-1 text-amber-600 font-lexend text-[11px] font-bold">
                           <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
                           {item.product_rating}
                         </span>
@@ -167,33 +167,33 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
 
                 {/* Category Pill */}
                 <td className="py-4 px-4">
-                  <span className="inline-flex items-center rounded-lg bg-white/[0.04] border border-white/[0.06] px-2.5 py-1 text-xs font-medium text-slate-300">
+                  <span className="inline-flex items-center rounded-lg bg-slate-100 border border-slate-200/80 px-2.5 py-1 text-xs font-medium text-slate-700">
                     {categoryNames[item.category_slug] || item.category_slug}
                   </span>
                 </td>
 
                 {/* Price */}
-                <td className="py-4 px-4 text-right font-mono font-medium text-slate-300">
+                <td className="py-4 px-4 text-right font-lexend font-semibold text-slate-700">
                   {formatVND(item.current_price)}
                 </td>
 
                 {/* Daily Units Delta */}
                 <td className="py-4 px-4 text-right">
-                  <div className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 text-xs font-mono font-bold text-[#10B981]">
+                  <div className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 text-xs font-lexend font-bold text-emerald-700">
                     <TrendingUp className="h-3 w-3" />
                     <span>+{formatNumber(item.estimated_daily_units)}</span>
                   </div>
-                  <div className="text-[10px] text-slate-500 mt-0.5">
-                    Tổng bán: {formatNumber(item.historical_sold)}
+                  <div className="text-[10px] text-slate-400 mt-0.5 font-lexend">
+                    Tổng: {formatNumber(item.historical_sold)}
                   </div>
                 </td>
 
                 {/* Estimated Daily GMV */}
                 <td className="py-4 px-4 text-right">
-                  <div className="font-mono font-extrabold text-white text-sm">
+                  <div className="font-lexend font-extrabold text-slate-900 text-sm">
                     {formatVND(item.estimated_daily_gmv)}
                   </div>
-                  <div className="text-[10px] font-mono text-emerald-400/80">
+                  <div className="text-[10px] font-lexend font-bold text-emerald-700">
                     ≈ {formatCompactVND(item.estimated_daily_gmv)}
                   </div>
                 </td>
@@ -204,7 +204,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                     href={item.affiliate_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-1 rounded-xl bg-white/[0.04] border border-white/[0.08] px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-emerald-500 hover:text-[#090D16] hover:border-emerald-500 active:scale-95 shadow-sm"
+                    className="inline-flex items-center justify-center gap-1 rounded-xl bg-slate-100 border border-slate-200 px-3.5 py-1.5 text-xs font-bold text-slate-800 transition-all hover:bg-emerald-600 hover:text-white hover:border-emerald-600 active:scale-95 shadow-xs"
                   >
                     <span>Xem Sàn</span>
                     <ArrowUpRight className="h-3.5 w-3.5" />
@@ -221,7 +221,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
         {products.map((item) => (
           <div
             key={item.product_id}
-            className="rounded-2xl border border-white/[0.08] bg-[#0E131F]/90 p-4 shadow-lg backdrop-blur-xl space-y-3"
+            className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm space-y-3"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-start gap-3 min-w-0">
@@ -232,41 +232,41 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <RankBadge rank={item.rank_overall} />
-                    <span className="text-[11px] font-medium text-slate-400 truncate">
+                    <span className="text-[11px] font-medium text-slate-500 truncate">
                       {item.shop_name}
                     </span>
                   </div>
-                  <h4 className="mt-1 font-bold text-sm text-white line-clamp-2">
+                  <h4 className="mt-1 font-bold text-sm text-slate-900 line-clamp-2">
                     {item.product_name}
                   </h4>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-2 border-t border-white/[0.06] text-xs">
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
               <div>
-                <span className="text-slate-400">Doanh thu 24h:</span>
-                <div className="font-mono font-extrabold text-emerald-400 text-sm">
+                <span className="text-slate-500">Doanh thu 24h:</span>
+                <div className="font-lexend font-extrabold text-emerald-700 text-sm">
                   {formatVND(item.estimated_daily_gmv)}
                 </div>
               </div>
               <div className="text-right">
-                <span className="text-slate-400">Đơn ngày:</span>
-                <div className="font-mono font-bold text-white">
+                <span className="text-slate-500">Đơn ngày:</span>
+                <div className="font-lexend font-bold text-slate-900">
                   +{formatNumber(item.estimated_daily_units)}
                 </div>
               </div>
             </div>
 
             <div className="flex items-center justify-between pt-1">
-              <span className="font-mono text-xs font-semibold text-slate-300">
+              <span className="font-lexend text-xs font-bold text-slate-700">
                 {formatVND(item.current_price)}
               </span>
               <a
                 href={item.affiliate_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 rounded-xl bg-emerald-500 px-3.5 py-1.5 text-xs font-bold text-[#090D16]"
+                className="inline-flex items-center gap-1 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs"
               >
                 <span>Xem TikTok Shop</span>
                 <ArrowUpRight className="h-3 w-3" />

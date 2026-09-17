@@ -18,7 +18,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [localSearch, setLocalSearch] = useState<string>(searchQuery);
 
-  // Instant / debounced synchronization with parent
   useEffect(() => {
     setLocalSearch(searchQuery);
   }, [searchQuery]);
@@ -41,81 +40,71 @@ export const Navbar: React.FC<NavbarProps> = ({
     : "Hôm nay";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#1E293B] bg-[#090D16]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-xs">
       <div className="mx-auto flex max-w-container flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         {/* Brand & Status Indicator */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-amber-500 shadow-md shadow-emerald-900/30">
-              <Flame className="h-6 w-6 text-[#090D16]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-md shadow-emerald-500/20">
+              <Flame className="h-6 w-6 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xl font-bold tracking-tight text-[#F9FAFB]">
-                  Food<span className="text-[#10B981]">Metric</span>
+                <span className="text-xl font-bold tracking-tight text-slate-900">
+                  Food<span className="text-emerald-600">Metric</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-950/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#10B981]">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-700">
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600"></span>
                   </span>
-                  LIVE TRACKING
+                  DAILY SNAPSHOT
                 </span>
               </div>
-              <p className="text-[11px] text-[#9CA3AF] hidden sm:block">
-                Radar Sản Phẩm Ăn Vặt Hot TikTok Shop Việt Nam
+              <p className="text-[11px] text-slate-500 hidden sm:block">
+                Radar Phân Tích & Xếp Hạng Đồ Ăn Vặt TikTok Shop
               </p>
             </div>
           </div>
-
-          {/* Mobile Timestamp Badge */}
-          <div className="flex items-center gap-1.5 text-[11px] text-[#64748B] sm:hidden">
-            <Radio className="h-3 w-3 text-[#10B981]" />
-            <span>{formattedDate}</span>
-          </div>
         </div>
 
-        {/* Search Bar and Meta Information */}
-        <div className="flex flex-1 items-center gap-3 sm:max-w-md sm:justify-end">
-          <div className="relative w-full">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <Search className="h-4 w-4 text-[#64748B]" />
-            </div>
-            <input
-              type="text"
-              value={localSearch}
-              onChange={(e) => setLocalSearch(e.target.value)}
-              placeholder="Tìm kiếm snack, khô, bánh tráng, shop..."
-              aria-label="Tìm kiếm sản phẩm hoặc shop"
-              className="h-11 w-full rounded-xl border border-[#1E293B] bg-[#111827] pl-10 pr-9 text-sm text-[#F9FAFB] placeholder-[#64748B] transition-colors focus:border-[#10B981] focus:outline-none focus:ring-1 focus:ring-[#10B981]"
-            />
-            {localSearch && (
-              <button
-                type="button"
-                onClick={() => {
-                  setLocalSearch("");
-                  onSearchChange("");
-                }}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#9CA3AF] hover:text-[#F9FAFB]"
-                aria-label="Xóa tìm kiếm"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
+        {/* Center Search Input */}
+        <div className="relative flex-1 max-w-md">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+            <Search className="h-4 w-4" />
           </div>
+          <input
+            type="text"
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
+            placeholder="Tìm món ăn vặt, tên shop, bánh tráng, khô gà..."
+            className="w-full rounded-xl border border-slate-200 bg-slate-50/80 py-2 pl-9 pr-8 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 transition-all focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+          />
+          {localSearch && (
+            <button
+              type="button"
+              onClick={() => {
+                setLocalSearch("");
+                onSearchChange("");
+              }}
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
 
-          {/* Desktop Timestamp & Count Pill */}
-          <div className="hidden shrink-0 flex-col text-right sm:flex">
-            <div className="flex items-center justify-end gap-1.5 text-xs text-[#9CA3AF]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]"></span>
-              <span>Cập nhật: {formattedDate}</span>
-            </div>
-            {typeof totalProducts === "number" && (
-              <span className="text-[11px] text-[#64748B]">
-                {totalProducts} sản phẩm theo dõi
-              </span>
-            )}
+        {/* Right Status Badge */}
+        <div className="hidden lg:flex items-center gap-4 text-xs">
+          <div className="flex items-center gap-1.5 text-slate-500">
+            <Radio className="h-3.5 w-3.5 text-emerald-600" />
+            <span>Ngày chốt: <strong className="font-lexend text-slate-800">{formattedDate}</strong></span>
           </div>
+          {typeof totalProducts === "number" && (
+            <div className="rounded-lg bg-slate-100 px-2.5 py-1 text-slate-600 border border-slate-200">
+              <strong className="font-lexend text-slate-900">{totalProducts}</strong> SKU theo dõi
+            </div>
+          )}
         </div>
       </div>
     </header>

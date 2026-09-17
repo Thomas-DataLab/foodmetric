@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, Lexend } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -8,9 +8,9 @@ const inter = Inter({
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
+const lexend = Lexend({
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-lexend",
   display: "swap",
 });
 
@@ -27,7 +27,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#090D16",
+  themeColor: "#FFFFFF",
 };
 
 export default function RootLayout({
@@ -36,11 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="vi"
-      className={`dark ${inter.variable} ${jetbrainsMono.variable}`}
-    >
-      <body className="min-h-screen bg-[#090D16] font-sans text-[#F9FAFB] antialiased">
+    <html lang="vi" className={`${inter.variable} ${lexend.variable}`}>
+      <body className="min-h-screen bg-[#F8FAFC] font-sans text-[#0F172A] antialiased">
         {children}
       </body>
     </html>

@@ -10,32 +10,34 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#090D16",
+        background: "#F8FAFC",
         surface: {
-          DEFAULT: "#111827",
-          elevated: "#1F2937",
+          DEFAULT: "#FFFFFF",
+          elevated: "#F1F5F9",
         },
         border: {
-          subtle: "#1E293B",
-          highlight: "#334155",
+          subtle: "#E2E8F0",
+          highlight: "#CBD5E1",
         },
         accent: {
-          emerald: "#10B981",
-          amber: "#F59E0B",
-          rose: "#EF4444",
+          emerald: "#059669",
+          amber: "#D97706",
+          rose: "#E11D48",
+          blue: "#2563EB",
         },
         text: {
-          primary: "#F9FAFB",
-          secondary: "#9CA3AF",
-          muted: "#64748B",
+          primary: "#0F172A",
+          secondary: "#475569",
+          muted: "#94A3B8",
         },
       },
       maxWidth: {
         container: "1440px",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"],
+        sans: ["var(--font-inter)", "Inter", "sans-serif"],
+        lexend: ["var(--font-lexend)", "Lexend", "sans-serif"],
+        mono: ["var(--font-lexend)", "Lexend", "monospace"],
       },
     },
   },
