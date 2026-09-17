@@ -29,11 +29,12 @@ Website **FoodMetric** không đơn thuần là một bảng hiển thị dữ l
 [ Giao Diện Web FoodMetric ] (https://foodmetric.vercel.app/)
   ├── Chạm 1: Top Announcement Bar (Đỉnh Header: "Ghé Kênh TikTok ↗")
   ├── Chạm 2: Navbar CTA Button ("🔥 Kênh Food Lén Lút")
-  ├── Chạm 3: Bento Grid ("Gợi ý Kịch bản & Âm thanh Viral")
-  ├── Chạm 4: Community Funnel Banner ("✨ Khám Phá Kênh @foodlenlut ↗")
-  ├── Chạm 5: Sticky Bottom Mobile Bar (Dành riêng cho smartphone)
+  ├── Chạm 3: Kho Săn Deal Thật (Freeship 45k, Deal 69k, Deal 45k + Nút "Lưu Thêm Voucher Toàn Sàn ↗")
+  ├── Chạm 4: Đấu Trường Ăn Vặt Snack Battle (Kích thích vote tranh luận + Nút "Kêu gọi bạn bè vào bình chọn 🗳️")
+  ├── Chạm 5: Bộ Lọc Hạt Dẻ Dưới 50k & Khẩu Vị (Đánh trúng túi tiền học sinh sinh viên)
   ├── Chạm 6: Vòng Quay "🎲 Hôm Nay Ăn Gì?" (Kích thích rủ bạn bè gom đơn)
-  └── Chạm 7: Nút "🛒 Mua Ngay" (Chuyển đổi trực tiếp vào giỏ hàng TikTok Shop)
+  ├── Chạm 7: Community Funnel Banner ("✨ Khám Phá Kênh @foodlenlut ↗")
+  └── Chạm 8: Nút "🛒 Mua Ngay ↗" & Thumbnail Click (Chuyển đổi trực tiếp vào giỏ hàng TikTok Shop)
                  │
                  ▼
 [ Đích Đến Chuyển Đổi ]

@@ -142,8 +142,8 @@ Khi phát hiện một kênh KOC đồ ăn vặt mới đang viral hoặc một 
   "
   ```
 
-### Sự cố 5: Kiểm tra tính toàn vẹn & độ khớp của hình ảnh sản phẩm (Image Quality Gate)
-- **Mục đích**: Bảo đảm 100% sản phẩm trên leaderboard đều có ảnh thật tồn tại trong `web/public/images/products/` và toán tài chính khớp `GMV = Units * Price`.
+### Sự cố 5: Kiểm tra tính toàn vẹn 3 chiều (Tên Món ↔ Ảnh Thumbnail ↔ Nội Dung Video)
+- **Mục đích**: Bảo đảm 100% sản phẩm trên leaderboard đều có ảnh thật tồn tại trong `web/public/images/products/`, file video MP4 tồn tại trong `web/public/videos/`, và nội dung video phải khớp chính xác với món ăn (tránh lỗi lệch như gán video kẹo dẻo vào tiêu đề hành khô).
 - **Cách chạy kiểm tra tự động**:
   ```bash
   python -c "
@@ -153,8 +153,26 @@ Khi phát hiện một kênh KOC đồ ăn vặt mới đang viral hoặc một 
       data = json.load(f)
   for p in data['leaderboard']:
       img = Path('web/public') / p['image_url'].lstrip('/')
-      assert img.exists(), f'MISSING: {img}'
+      vid = Path('web/public/videos') / f\"{p['product_id']}.mp4\"
+      assert img.exists(), f'MISSING IMAGE: {img}'
+      assert vid.exists(), f'MISSING VIDEO: {vid}'
       assert p['estimated_daily_gmv'] == p['estimated_daily_units'] * p['current_price']
-  print('✓ 100% Data & Image Quality Gate PASSED!')
+  print('✓ 100% Data, Image & Video Integrity Gate PASSED!')
   "
+  ```
+
+### Sự cố 6: Trình duyệt chặn Autoplay khiến modal video bị đen màn hình
+- **Nguyên nhân**: Chính sách Autoplay Policy của trình duyệt hiện đại (Chrome/Edge/Safari) chặn phát video có tiếng tự động nếu chưa có tương tác trước đó, dẫn đến `video.play()` bị reject và màn hình hiển thị đen.
+- **Cách khắc phục**: Thẻ `<video>` trong `VideoModal.tsx` bắt buộc phải có thuộc tính `poster={product.image_url}` (hiển thị ảnh bìa sản phẩm ngay lập tức) và `muted` (cho phép autoplay không tiếng, người dùng tự bấm bật âm thanh khi xem).
+  ```tsx
+  <video
+    src={nativeVideoSrc}
+    poster={product.image_url}
+    preload="auto"
+    controls
+    autoPlay
+    muted
+    playsInline
+    loop
+  />
   ```

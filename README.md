@@ -70,19 +70,34 @@ Hệ thống được thiết kế theo chuẩn **Data Product Engineering** v�
   * Popup vòng quay ngẫu nhiên (Random Snack Modal).
 - Mở thẳng liên kết sản phẩm trên TikTok Shop để người xem mua ngay, tối ưu tỷ lệ chuyển đổi hoa hồng affiliate.
 
-### 3. Radar Thị Trường 24 Giờ (Bento Grid 4-Card Summary)
-- **Quán Quân Doanh Số Hôm Nay (#1 Leader)**: Tôn vinh sản phẩm đạt GMV ước tính cao nhất trong 24h qua.
-- **Tăng Tốc Bùng Nổ (Top Velocity)**: Phát hiện sản phẩm có tốc độ tăng trưởng đơn hàng nhanh nhất (Breakout trend).
-- **Tổng GMV & Số Đơn Toàn Ngành**: Bức tranh tổng quan thị trường đồ ăn vặt theo dõi.
-- **Gợi Ý Kịch Bản & Âm Thanh Viral**: Bóc tách hook 3 giây đầu của video top view giúp KOC làm video bán ké.
+### 3. Khu Vực Kéo Traffic: Săn Deal & Đấu Trường Ăn Vặt (Traffic Acquisition Hub)
+- **🏷️ Săn Deal & Voucher TikTok Shop Hôm Nay (Ưu Đãi Thật 100%)**:
+  * 3 thẻ ưu đãi thực tế đang diễn ra trên sàn (Freeship từ 45k, Flash sale Bánh Pía 69k, Combo Bánh Tráng 45k).
+  * Loại bỏ hoàn toàn mã chữ ảo (tránh lỗi người dùng nhập không được trên TikTok Shop); thay bằng nút mở thẳng giỏ hàng trên app TikTok.
+  * Tích hợp nút `Lưu Thêm Voucher Toàn Sàn ↗` dẫn thẳng về kênh TikTok `@foodlenlut`.
+- **⚔️ Đấu Trường Ăn Vặt (Snack Battle)**:
+  * Cuộc đối đầu nảy lửa giữa 2 món hot nhất: *Bánh Tráng Cuốn Sốt Bơ* 🆚 *Bánh Pía Lava Mochi*.
+  * Tương tác bình chọn trực tiếp với thanh tỷ lệ % thời gian thực (lưu trạng thái qua `localStorage`).
+  * Tích hợp nút `Kêu gọi bạn bè vào bình chọn 🗳️` tự động sao chép link rủ rê vào clipboard để chia sẻ vào nhóm bạn bè.
+- **2 Thẻ Tiêu Biểu Nổi Bật**:
+  * **🔥 Món Ăn Vặt Quốc Dân Nổ Đơn Nhất**: Tôn vinh Bánh Pía Lava Mochi (+5.880 đơn/ngày).
+  * **⚡ Món Mới Cháy Hàng Tuần Này**: Bắt trend Bánh Tráng Sốt Bơ (+5.143 đơn/ngày).
+  * Bấm vào thumbnail hoặc nút `▶ Xem Video` để mở trình phát HD ngay lập tức.
 
-### 4. Bảng Xếp Hạng 17 Sản Phẩm Chuẩn Hóa 100% Ảnh Thật (Master Leaderboard)
-- 17 sản phẩm đồ ăn vặt được rà soát bằng Vision AI, đảm bảo 100% hình ảnh thumbnail khớp chính xác với tên món và video gốc (không có ảnh placeholder rỗng).
-- Tra cứu nhanh theo tên món, tên shop, hashtag hoặc creator.
-- Phân loại 4 danh mục: *Bánh tráng & muối sốt, Khô các loại & gia vị, Bánh kẹo & đặc sản vùng miền, Trà & đồ uống pha sẵn*.
+### 4. Bảng Vàng Nổ Đơn & Bộ Lọc Khẩu Vị / Giá Rẻ
+- **Bộ Lọc Khẩu Vị & Mức Giá**: Phân loại thông minh giúp học sinh sinh viên và dân văn phòng tìm món siêu nhanh:
+  * *Tất Cả (17)*
+  * *Hạt Dẻ Dưới 50k (10 món giá rẻ)*
+  * *Bánh Tráng & Sốt Bơ (5 món)*
+  * *Đồ Khô & Cay (2 món)*
+  * *Trà & Đá Me Giải Nhiệt (3 món)*
+  * *Bánh Kẹo Đặc Sản (7 món)*
+- **100% Ảnh Thật & Đồng Bộ Nội Dung (Harmonized Integrity)**:
+  * 17 món ăn vặt được kiểm duyệt đối soát 3 chiều: Tên món ↔ Ảnh thumbnail ↔ Video review thực tế (loại bỏ hoàn toàn ảnh placeholder hoặc lệch món).
+  * Bảng xếp hạng thoáng mắt, loại bỏ các chỉ số tài chính khô khan, tập trung vào giá deal hời và số đơn bán chứng thực.
 
 ### 5. Phễu Kéo Traffic Đa Tầng & Nhận Diện Thương Hiệu
-- **Top Announcement Bar**: Dải banner gradient chạy trên đỉnh quảng bá kênh TikTok `@foodlenlut`.
+- **Top Announcement Bar**: Dải banner gradient chạy trên đỉnh quảng bá kênh TikTok `@foodlenlut` kèm nút `Ghé Kênh TikTok ↗`.
 - **Thẻ OpenGraph Card**: Tự động bung hình ảnh preview sắc nét (1200x630) khi chia sẻ link lên Facebook, Zalo, Telegram.
 - **Community Funnel Card**: Banner kêu gọi tham gia cộng đồng kèm nút 1-chạm sao chép link web.
 - **Favicon Thương Hiệu**: Biểu tượng chú Capybara 3D chính thức của kênh Food Lén Lút.
@@ -90,7 +105,8 @@ Hệ thống được thiết kế theo chuẩn **Data Product Engineering** v�
 ### 6. Trình Phát Video HD Native & Tối Ưu Hóa FastStart (Zero-Lag Streaming)
 - 100% (17/17 món) đều có video HD thực tế sẵn sàng phát ngay lập tức trong modal.
 - Bấm trực tiếp vào bất kỳ ảnh thumbnail nào trên giao diện (Vòng quay, Bento card, Leaderboard) là mở video xem ngay.
-- Loại bỏ hoàn toàn bẫy iframe TikTok bị chặn; nén video chuẩn H.264 CRF 27 + cờ `-movflags +faststart` giúp video tải tức thì trong 0.1 giây và tiết kiệm 62% dung lượng (giảm từ 196MB xuống 75MB).
+- Tích hợp thuộc tính `poster` (ảnh bìa sắc nét) và `muted` (tuân thủ chính sách Autoplay Policy của trình duyệt) giúp video tự động phát mượt mà không bị đen màn hình hay khựng giật.
+- Nén video chuẩn H.264 CRF 27 + cờ `-movflags +faststart` giúp video tải tức thì trong 0.1 giây và tiết kiệm 62% dung lượng (giảm từ 196MB xuống 75MB).
 - Dữ liệu vận hành thuần túy qua **DuckDB Embedded OLAP** nội bộ, xuất JSON tĩnh siêu nhẹ (25KB), không tốn chi phí database ngoài.
 
 ---

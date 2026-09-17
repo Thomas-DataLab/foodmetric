@@ -88,8 +88,18 @@ Lưu trữ số liệu biến động theo từng snapshot 24h:
   * Số liệu tài chính: **Lexend** (thiết kế Tabular Numbers giúp các con số doanh thu, thứ hạng rank không bị nhảy giật khi sort/filter).
 - **Native HD Video Player (`VideoModal.tsx`)**:
   * Chuẩn hóa 100% sang HTML5 Native Video phát trực tiếp các file MP4 H.264 cục bộ (đã loại bỏ hoàn toàn iframe nhúng TikTok do chính sách hạn chế của ByteDance).
-  * Đầy đủ âm thanh, thanh tua seekbar, không quảng cáo và hỗ trợ chế độ toàn màn hình.
+  * Tích hợp thuộc tính `poster={product.image_url}` (hiển thị ảnh bìa sắc nét ngay lập tức) và `muted` (tuân thủ chính sách Autoplay Policy của trình duyệt) giúp video phát ngay lập tức khi mở modal, triệt tiêu hoàn toàn màn hình đen hay vòng xoay tải chậm.
+  * Đầy đủ âm thanh (người dùng bật âm thanh khi xem), thanh tua seekbar, không quảng cáo và hỗ trợ chế độ toàn màn hình.
   * Tích hợp nút lớn `🛒 Đặt Mua Ngay Trên TikTok Shop ↗` dẫn thẳng link affiliate giỏ hàng và liên kết nhanh "Mở trên TikTok ↗".
+- **Module Săn Deal Thật & Voucher TikTok Shop (`BentoGrid.tsx`)**:
+  * Hiển thị 3 ưu đãi thật 100% đang diễn ra trên sàn (Freeship từ 45k, Flash sale Bánh Pía 69k, Combo Bánh Tráng Bơ 45k).
+  * Loại bỏ hoàn toàn bẫy mã chữ ảo; trang bị nút direct CTA dẫn thẳng vào giỏ hàng TikTok Shop và nút `Lưu Thêm Voucher Toàn Sàn ↗` kết nối kênh `@foodlenlut`.
+- **Module Đấu Trường Ăn Vặt — Snack Battle (`BentoGrid.tsx`)**:
+  * Cơ chế bình chọn đối đầu giữa 2 món hot nhất (*Bánh Tráng Sốt Bơ* 🆚 *Bánh Pía Lava Mochi*).
+  * Quản lý trạng thái bình chọn cục bộ qua `localStorage` (`foodmetric_snack_battle_voted`, `foodmetric_votes_left`, `foodmetric_votes_right`), tính toán tỷ lệ % thời gian thực.
+  * Nút `Kêu gọi bạn bè vào bình chọn 🗳️` sử dụng Web Clipboard API để tự động copy link trang web và thông điệp rủ rê bạn bè tham gia kéo vote.
+- **Bộ Lọc Khẩu Vị & Giá Rẻ (`CategoryTabs.tsx` & `app/page.tsx`)**:
+  * Kiến trúc lọc động kết hợp: Tab `under-50k` lọc sản phẩm có `current_price < 50000`, cùng 4 nhóm danh mục khẩu vị (*Bánh Tráng & Sốt Bơ*, *Đồ Khô & Cay*, *Trà & Đá Me Giải Nhiệt*, *Bánh Kẹo Đặc Sản*).
 - **Điều Hướng Thumbnail Đồng Nhất (Unified Thumbnail Click)**:
   * Người dùng bấm vào bất kỳ ảnh thumbnail nào trên giao diện (Bento Grid Hero Top 1, thẻ Top Velocity, bảng xếp hạng Desktop/Mobile hay Vòng quay ngẫu nhiên) đều kích hoạt mở ngay `VideoModal` phát video HD tương ứng.
   * Cơ chế xử lý state nguyên tử: Đóng `RandomSnackModal` ngay khi kích hoạt `VideoModal`, triệt tiêu hoàn toàn hiện tượng chồng chéo popup.
