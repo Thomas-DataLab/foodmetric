@@ -34,6 +34,9 @@ venv/
 *.parquet
 raw_snapshots/
 *.log
+data/*.png
+data/*.jpg
+data/*.mp4
 
 # Editor & OS Files
 .DS_Store
