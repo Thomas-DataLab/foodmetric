@@ -86,6 +86,11 @@ Lưu trữ số liệu biến động theo từng snapshot 24h:
 - **Typography & Font Strategy**:
   * Chữ hiển thị: **Inter** (tối ưu khả năng đọc văn bản trên màn hình nhỏ).
   * Số liệu tài chính: **Lexend** (thiết kế Tabular Numbers giúp các con số doanh thu, thứ hạng rank không bị nhảy giật khi sort/filter).
+- **Quẻ Tarot Vận Mệnh Ăn Vặt Mỗi Ngày (`web/components/DailyTarotModal.tsx`)**:
+  * Động cơ giữ chân người dùng (Habit-forming & Retention Engine) 0đ hạ tầng, vận hành theo chu kỳ 24h nghiêm ngặt (00:00 - 23:59).
+  * State Machine: Quản lý trạng thái rút quẻ qua `localStorage` (`foodmetric_tarot_drawn_date`, `foodmetric_tarot_drawn_card_id`).
+  * Trạng thái 1 (Chưa rút): Giao diện 3 lá bài Tarot úp mặt với viền vàng linh vật Capybara, hiệu ứng hover nổi bật và hiệu ứng xoay lật bài 3D mượt mà (`rotate-y-180`, `perspective-1000`).
+  * Trạng thái 2 (Đã rút): Hiển thị lá bài tương ứng trong bộ 6 lá bài độc quyền (*The Overthinker, The Peacemaker, The Melting Heart, The Happy Chewer, The Awakener, The Spicy Conqueror*), thông điệp vũ trụ `oracle`, món ăn hợp mệnh kèm ảnh thật, giá deal, con số may mắn, đồng hồ đếm ngược thời gian thực đến nửa đêm `00:00`, và 3 nút hành động (Mua Món Hợp Mệnh qua Deep-Link, Xem Video Review in-app, Khoe Quẻ Cho Bạn Bè).
 - **Tối Ưu Hóa Mobile & SEO Toàn Diện**:
   * **SEO Google Rich Snippets (`web/app/layout.tsx`)**: Nhúng dữ liệu có cấu trúc Schema.org JSON-LD (`WebSite`, `Organization`, `ItemList`) khai báo 17 món ăn vặt kèm giá bán và đánh giá sao, giúp Google bot lập chỉ mục nhanh chóng và hiển thị rich snippets nổi bật trên Google Search.
   * **PWA Web App Manifest (`web/app/manifest.ts`)**: Cung cấp cấu hình manifest chuẩn Next.js 14 App Router, hỗ trợ tính năng "Thêm vào màn hình chính" (Add to Home Screen) trên Safari (iOS) và Chrome (Android), biến web thành ứng dụng độc lập với logo Capybara chính thức (chi phí 0đ).
