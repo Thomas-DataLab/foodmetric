@@ -26,6 +26,11 @@ export default function HomePage() {
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [isRandomModalOpen, setIsRandomModalOpen] = useState<boolean>(false);
 
+  const handleSelectProduct = (product: ProductItem | null) => {
+    setIsRandomModalOpen(false);
+    setSelectedProduct(product);
+  };
+
   const fetchData = async () => {
     try {
       const res = await fetch("/data/leaderboard_latest.json", {
@@ -179,7 +184,7 @@ export default function HomePage() {
         </section>
 
         {/* Bento Grid (4-Card Summary) */}
-        <BentoGrid kpis={data.bento_kpis} onSelectProduct={setSelectedProduct} />
+        <BentoGrid kpis={data.bento_kpis} onSelectProduct={handleSelectProduct} />
 
         {/* Community & Channel Banner */}
         <section className="rounded-2xl border border-rose-200/70 bg-gradient-to-r from-rose-50/80 via-white to-amber-50/80 p-4 sm:p-6 shadow-xs">
@@ -230,7 +235,7 @@ export default function HomePage() {
         <LeaderboardTable
           products={filteredProducts}
           categoryNames={categoryNames}
-          onSelectProduct={setSelectedProduct}
+          onSelectProduct={handleSelectProduct}
         />
       </main>
 
@@ -245,7 +250,7 @@ export default function HomePage() {
         isOpen={isRandomModalOpen}
         onClose={() => setIsRandomModalOpen(false)}
         products={data?.leaderboard || []}
-        onSelectProduct={setSelectedProduct}
+        onSelectProduct={handleSelectProduct}
       />
 
       {/* Sticky Bottom Mobile Bar */}
