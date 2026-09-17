@@ -13,15 +13,17 @@ import {
   Check,
   Copy,
   ArrowUpRight,
+  Play,
 } from "lucide-react";
-import { BentoKPIs } from "@/types";
+import { BentoKPIs, ProductItem } from "@/types";
 import { formatVND, formatCompactVND, formatNumber } from "@/lib/utils";
 
 interface BentoGridProps {
   kpis: BentoKPIs;
+  onSelectProduct?: (product: ProductItem) => void;
 }
 
-export const BentoGrid: React.FC<BentoGridProps> = ({ kpis }) => {
+export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) => {
   const { top_gmv_product, fastest_growth_product, top_category, top_viral_hook } = kpis;
   const [copied, setCopied] = useState<boolean>(false);
 
@@ -121,17 +123,27 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ kpis }) => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+              <div className="flex items-center justify-between pt-3 border-t border-slate-100 gap-3">
                 <span className="text-xs text-slate-400">Snapshot delta 24h</span>
-                <a
-                  href={top_gmv_product.affiliate_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-emerald-600/20 transition-all hover:bg-emerald-500 active:scale-95"
-                >
-                  <span>Mở Giỏ Hàng TikTok Shop</span>
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </a>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => onSelectProduct?.(top_gmv_product)}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-purple-600/20 transition-all hover:bg-purple-700 active:scale-95"
+                  >
+                    <Play className="h-3.5 w-3.5 fill-white" />
+                    <span>Xem Video KOC</span>
+                  </button>
+                  <a
+                    href={top_gmv_product.video_url || top_gmv_product.affiliate_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-emerald-600/20 transition-all hover:bg-emerald-500 active:scale-95"
+                  >
+                    <span>Mở TikTok</span>
+                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -191,14 +203,24 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ kpis }) => {
 
             <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
               <span className="text-xs text-slate-400">Tín hiệu viral mạnh</span>
-              <a
-                href={fastest_growth_product.affiliate_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-bold text-amber-700 hover:text-amber-800 inline-flex items-center gap-1"
-              >
-                Xem chi tiết <ArrowUpRight className="h-3 w-3" />
-              </a>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => onSelectProduct?.(fastest_growth_product)}
+                  className="text-xs font-bold text-purple-700 hover:text-purple-900 inline-flex items-center gap-1"
+                >
+                  <Play className="h-3 w-3 fill-purple-700" />
+                  <span>Xem Video</span>
+                </button>
+                <a
+                  href={fastest_growth_product.video_url || fastest_growth_product.affiliate_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-amber-700 hover:text-amber-800 inline-flex items-center gap-1"
+                >
+                  TikTok <ArrowUpRight className="h-3 w-3" />
+                </a>
+              </div>
             </div>
           </div>
         )}

@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { BentoGrid } from "@/components/BentoGrid";
 import { CategoryTabs } from "@/components/CategoryTabs";
 import { LeaderboardTable } from "@/components/LeaderboardTable";
+import { VideoModal } from "@/components/VideoModal";
 import { DashboardData, CategoryFilterId, ProductItem } from "@/types";
 import { formatCompactVND, formatNumber } from "@/lib/utils";
 import {
@@ -21,6 +22,7 @@ export default function HomePage() {
   const [data, setData] = useState<DashboardData>(initialData as unknown as DashboardData);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeCategory, setActiveCategory] = useState<CategoryFilterId>("all");
+  const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
 
   const fetchData = async () => {
     try {
@@ -164,7 +166,7 @@ export default function HomePage() {
         </section>
 
         {/* Bento Grid (4-Card Summary) */}
-        <BentoGrid kpis={data.bento_kpis} />
+        <BentoGrid kpis={data.bento_kpis} onSelectProduct={setSelectedProduct} />
 
         {/* Category Tabs Filter */}
         <div className="pt-2">
@@ -179,8 +181,15 @@ export default function HomePage() {
         <LeaderboardTable
           products={filteredProducts}
           categoryNames={categoryNames}
+          onSelectProduct={setSelectedProduct}
         />
       </main>
+
+      {/* Video Popup Modal */}
+      <VideoModal
+        product={selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+      />
 
       <footer className="mt-12 border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
         <div className="mx-auto max-w-container px-4 flex flex-col sm:flex-row items-center justify-between gap-3">

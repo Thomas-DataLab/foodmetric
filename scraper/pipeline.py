@@ -301,7 +301,8 @@ def run_pipeline():
             rating_star = EXCLUDED.rating_star;
         """, (p["shop_id"], p["shop_name"], p["rating"], True if "Official" in p["shop_name"] or "Mall" in p["shop_name"] else False))
 
-        affiliate_url = f"https://www.tiktok.com/shop/product/{p['id']}?ref=foodlenlut"
+        affiliate_url = p.get("video_url", f"https://www.tiktok.com/@{p['creator_handle']}")
+        img_url = f"/images/products/{p['id']}.jpg"
 
         conn.execute("""
         INSERT INTO dim_product (
@@ -321,12 +322,13 @@ def run_pipeline():
             video_likes = EXCLUDED.video_likes,
             current_price = EXCLUDED.current_price,
             image_url = EXCLUDED.image_url,
+            affiliate_url = EXCLUDED.affiliate_url,
             rating_star = EXCLUDED.rating_star,
             review_count = EXCLUDED.review_count;
         """, (
             p["id"], p["name"], p["category"], p["shop_id"],
             p["creator_handle"], p["creator_name"], p["creator_followers"], p["video_url"], p["video_views"], p["video_likes"],
-            p["price"], p["image_url"], affiliate_url, p["rating"], p["reviews"]
+            p["price"], img_url, affiliate_url, p["rating"], p["reviews"]
         ))
 
     # 2. Compute Snapshots with Math Consistency Assertion

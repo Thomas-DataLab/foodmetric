@@ -10,6 +10,7 @@ import {
   Award,
   Store,
   ArrowUpRight,
+  Play,
 } from "lucide-react";
 import { ProductItem } from "@/types";
 import { formatVND, formatCompactVND, formatNumber, formatCompactNumber } from "@/lib/utils";
@@ -17,6 +18,7 @@ import { formatVND, formatCompactVND, formatNumber, formatCompactNumber } from "
 interface LeaderboardTableProps {
   products: ProductItem[];
   categoryNames?: Record<string, string>;
+  onSelectProduct?: (product: ProductItem) => void;
 }
 
 const ProductThumbnail: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
@@ -31,7 +33,7 @@ const ProductThumbnail: React.FC<{ src: string; alt: string }> = ({ src, alt }) 
   }
 
   return (
-    <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100 shadow-xs group/img">
+    <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100 shadow-xs group/img cursor-pointer">
       <img
         src={src}
         alt={alt}
@@ -75,6 +77,7 @@ const RankBadge: React.FC<{ rank: number }> = ({ rank }) => {
 export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
   products,
   categoryNames = {},
+  onSelectProduct,
 }) => {
   if (products.length === 0) {
     return (
@@ -117,7 +120,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
               <th scope="col" className="py-4 px-4 text-right w-28">Giá Bán</th>
               <th scope="col" className="py-4 px-4 text-right w-36">Đơn Hàng / 24h</th>
               <th scope="col" className="py-4 px-4 text-right w-44">Doanh Thu 24h</th>
-              <th scope="col" className="py-4 pr-6 pl-4 text-center w-36">Hành Động</th>
+              <th scope="col" className="py-4 pr-6 pl-4 text-center w-48">Video KOC & Sàn</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -136,20 +139,25 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                 {/* Product Info with Thumbnail */}
                 <td className="py-4 px-4">
                   <div className="flex items-center gap-3.5 min-w-0">
-                    <ProductThumbnail
-                      src={item.image_url}
-                      alt={item.product_name}
-                    />
+                    <div onClick={() => onSelectProduct?.(item)}>
+                      <ProductThumbnail
+                        src={item.image_url}
+                        alt={item.product_name}
+                      />
+                    </div>
                     <div className="min-w-0 flex-1">
                       <h4
-                        className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-1 leading-snug"
+                        onClick={() => onSelectProduct?.(item)}
+                        className="font-bold text-slate-900 group-hover:text-purple-700 transition-colors line-clamp-1 leading-snug cursor-pointer"
                         title={item.product_name}
                       >
                         {item.product_name}
                       </h4>
-                      <div className="mt-1 flex items-center gap-2 text-xs text-slate-500">
-                        <Store className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                        <span className="truncate max-w-[140px] text-slate-700 font-medium">{item.shop_name}</span>
+                      <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                        <span className="flex items-center gap-1 font-medium text-slate-700">
+                          <Store className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                          <span className="truncate max-w-[120px]">{item.shop_name}</span>
+                        </span>
                         {item.is_shop_official && (
                           <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-50 px-1.5 py-0.2 text-[10px] font-bold text-emerald-700 border border-emerald-200">
                             <ShieldCheck className="h-3 w-3" /> Mall
@@ -163,17 +171,16 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                         {item.creator_handle && (
                           <>
                             <span>•</span>
-                            <a
-                              href={item.video_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-[11px] font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-md hover:bg-purple-100"
+                            <button
+                              type="button"
+                              onClick={() => onSelectProduct?.(item)}
+                              className="inline-flex items-center gap-1 text-[11px] font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-md hover:bg-purple-100 transition-colors"
                             >
-                              <span>KOC: @{item.creator_handle}</span>
+                              <span>@{item.creator_handle}</span>
                               {item.video_views && (
                                 <span className="font-lexend text-purple-900">({formatCompactNumber(item.video_views)} views)</span>
                               )}
-                            </a>
+                            </button>
                           </>
                         )}
                       </div>
@@ -214,17 +221,29 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                   </div>
                 </td>
 
-                {/* Action Button */}
+                {/* Action Buttons: Watch Video Modal + Direct TikTok Link */}
                 <td className="py-4 pr-6 pl-4 text-center">
-                  <a
-                    href={item.affiliate_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-1 rounded-xl bg-slate-100 border border-slate-200 px-3.5 py-1.5 text-xs font-bold text-slate-800 transition-all hover:bg-emerald-600 hover:text-white hover:border-emerald-600 active:scale-95 shadow-xs"
-                  >
-                    <span>Xem Sàn</span>
-                    <ArrowUpRight className="h-3.5 w-3.5" />
-                  </a>
+                  <div className="flex items-center justify-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => onSelectProduct?.(item)}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-purple-700 active:scale-95 transition-all"
+                      title="Xem video review trực tiếp trong web"
+                    >
+                      <Play className="h-3 w-3 fill-white" />
+                      <span>Xem Video</span>
+                    </button>
+
+                    <a
+                      href={item.video_url || item.affiliate_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex h-7 w-7 items-center justify-center rounded-xl border border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                      title="Mở trên ứng dụng TikTok"
+                    >
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </a>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -241,10 +260,12 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-start gap-3 min-w-0">
-                <ProductThumbnail
-                  src={item.image_url}
-                  alt={item.product_name}
-                />
+                <div onClick={() => onSelectProduct?.(item)}>
+                  <ProductThumbnail
+                    src={item.image_url}
+                    alt={item.product_name}
+                  />
+                </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <RankBadge rank={item.rank_overall} />
@@ -252,7 +273,10 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                       {item.shop_name}
                     </span>
                   </div>
-                  <h4 className="mt-1 font-bold text-sm text-slate-900 line-clamp-2">
+                  <h4
+                    onClick={() => onSelectProduct?.(item)}
+                    className="mt-1 font-bold text-sm text-slate-900 line-clamp-2 cursor-pointer"
+                  >
                     {item.product_name}
                   </h4>
                 </div>
@@ -274,19 +298,28 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-1">
+            <div className="flex items-center justify-between pt-1 gap-2">
               <span className="font-lexend text-xs font-bold text-slate-700">
                 {formatVND(item.current_price)}
               </span>
-              <a
-                href={item.affiliate_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs"
-              >
-                <span>Xem TikTok Shop</span>
-                <ArrowUpRight className="h-3 w-3" />
-              </a>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => onSelectProduct?.(item)}
+                  className="inline-flex items-center gap-1 rounded-xl bg-purple-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs"
+                >
+                  <Play className="h-3 w-3 fill-white" />
+                  <span>Xem Video</span>
+                </button>
+                <a
+                  href={item.video_url || item.affiliate_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 text-slate-600"
+                >
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              </div>
             </div>
           </div>
         ))}
