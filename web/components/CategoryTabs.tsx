@@ -38,8 +38,8 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
               onClick={() => onSelectCategory(tab.id)}
               className={`group flex min-h-[44px] shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all select-none ${
                 isActive
-                  ? "bg-emerald-500 text-[#090D16] shadow-md shadow-emerald-500/20 font-bold"
-                  : "border border-[#1E293B] bg-[#111827] text-[#9CA3AF] hover:border-[#334155] hover:text-[#F9FAFB]"
+                  ? "bg-gradient-to-r from-emerald-500 to-emerald-400 text-[#090D16] shadow-lg shadow-emerald-500/20 font-bold scale-[1.02]"
+                  : "border border-white/[0.08] bg-[#0E131F]/90 text-slate-400 hover:border-white/[0.18] hover:text-white"
               }`}
             >
               <span>{tab.label}</span>
@@ -47,8 +47,8 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
                 <span
                   className={`rounded-md px-1.5 py-0.5 text-[11px] font-mono transition-colors ${
                     isActive
-                      ? "bg-emerald-900/30 text-[#090D16] font-extrabold"
-                      : "bg-[#1E293B] text-[#64748B] group-hover:text-[#9CA3AF]"
+                      ? "bg-emerald-950/40 text-[#090D16] font-extrabold"
+                      : "bg-white/[0.06] text-slate-400 group-hover:text-white"
                   }`}
                 >
                   {count}

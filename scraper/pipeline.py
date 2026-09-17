@@ -19,40 +19,40 @@ DUCKDB_PATH = DATA_DIR / "foodmetric.duckdb"
 EXPORT_JSON_PATH = PROJECT_ROOT / "web" / "public" / "data" / "leaderboard_latest.json"
 EXPORT_JSON_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-# Curated benchmark products based on real viral TikTok Shop F&B campaigns
+# Curated benchmark products with real high-resolution food photography URLs
 BASE_BENCHMARK_PRODUCTS = [
     # Bánh Tráng
-    {"id": "tt_bt_01", "name": "Bánh Tráng Phơi Sương Sốt Bơ Tỏi Hành Phi (Set 500g)", "category": "banh-trang", "shop_id": "sp_bichanvat", "shop_name": "Bích Ăn Vặt Official", "price": 45000, "rating": 4.9, "reviews": 8420, "sold_base": 142000, "daily_growth_rate": 0.018},
-    {"id": "tt_bt_02", "name": "Bánh Tráng Cuộn Tôm Hành Muối Nhuyễn Siêu Cay", "category": "banh-trang", "shop_id": "sp_taphoacoc", "shop_name": "Tạp Hóa Cóc", "price": 35000, "rating": 4.8, "reviews": 5190, "sold_base": 98000, "daily_growth_rate": 0.015},
-    {"id": "tt_bt_03", "name": "Bánh Tráng Xì Ke Muối Tỏi Tây Ninh Đặc Biệt", "category": "banh-trang", "shop_id": "sp_tiemanvat", "shop_name": "Tiệm Ăn Vặt Tuổi Thơ", "price": 25000, "rating": 4.7, "reviews": 3210, "sold_base": 65000, "daily_growth_rate": 0.022},
-    {"id": "tt_bt_04", "name": "Bánh Tráng Dẻo Tôm Cuốn Sốt Me Chua Ngọt", "category": "banh-trang", "shop_id": "sp_namtaphoa", "shop_name": "Nam Tạp Hóa Store", "price": 42000, "rating": 4.8, "reviews": 2900, "sold_base": 51000, "daily_growth_rate": 0.012},
-    {"id": "tt_bt_05", "name": "Set Bánh Tráng Trộn Tự Làm Full Topping Bò Khô Tép Mỡ", "category": "banh-trang", "shop_id": "sp_meanvat99", "shop_name": "Mê Ăn Vặt 99", "price": 55000, "rating": 4.9, "reviews": 11200, "sold_base": 189000, "daily_growth_rate": 0.025},
+    {"id": "tt_bt_01", "name": "Bánh Tráng Phơi Sương Sốt Bơ Tỏi Hành Phi (Set 500g)", "category": "banh-trang", "shop_id": "sp_bichanvat", "shop_name": "Bích Ăn Vặt Official", "price": 45000, "rating": 4.9, "reviews": 8420, "sold_base": 142000, "daily_growth_rate": 0.018, "image_url": "https://images.unsplash.com/photo-1541544741938-0af808871cc0?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_bt_02", "name": "Bánh Tráng Cuộn Tôm Hành Muối Nhuyễn Siêu Cay", "category": "banh-trang", "shop_id": "sp_taphoacoc", "shop_name": "Tạp Hóa Cóc", "price": 35000, "rating": 4.8, "reviews": 5190, "sold_base": 98000, "daily_growth_rate": 0.015, "image_url": "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_bt_03", "name": "Bánh Tráng Xì Ke Muối Tỏi Tây Ninh Đặc Biệt", "category": "banh-trang", "shop_id": "sp_tiemanvat", "shop_name": "Tiệm Ăn Vặt Tuổi Thơ", "price": 25000, "rating": 4.7, "reviews": 3210, "sold_base": 65000, "daily_growth_rate": 0.022, "image_url": "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_bt_04", "name": "Bánh Tráng Dẻo Tôm Cuốn Sốt Me Chua Ngọt", "category": "banh-trang", "shop_id": "sp_namtaphoa", "shop_name": "Nam Tạp Hóa Store", "price": 42000, "rating": 4.8, "reviews": 2900, "sold_base": 51000, "daily_growth_rate": 0.012, "image_url": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_bt_05", "name": "Set Bánh Tráng Trộn Tự Làm Full Topping Bò Khô Tép Mỡ", "category": "banh-trang", "shop_id": "sp_meanvat99", "shop_name": "Mê Ăn Vặt 99", "price": 55000, "rating": 4.9, "reviews": 11200, "sold_base": 189000, "daily_growth_rate": 0.025, "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80"},
 
     # Khô Các Loại
-    {"id": "tt_kh_01", "name": "Khô Gà Lá Chanh Xé Cay Đậm Vị Hũ 500g", "category": "kho-cac-loai", "shop_id": "sp_bichanvat", "shop_name": "Bích Ăn Vặt Official", "price": 85000, "rating": 4.8, "reviews": 9600, "sold_base": 115000, "daily_growth_rate": 0.014},
-    {"id": "tt_kh_02", "name": "Khô Bò Miếng Mềm Cay Tẩm Ướp Gia Truyền", "category": "kho-cac-loai", "shop_id": "sp_meanvat99", "shop_name": "Mê Ăn Vặt 99", "price": 165000, "rating": 4.9, "reviews": 6400, "sold_base": 78000, "daily_growth_rate": 0.019},
-    {"id": "tt_kh_03", "name": "Khô Heo Cháy Tỏi Giòn Rụm Hũ Lớn 300g", "category": "kho-cac-loai", "shop_id": "sp_taphoamero", "shop_name": "Tạp Hóa Mero", "price": 95000, "rating": 4.7, "reviews": 4120, "sold_base": 54000, "daily_growth_rate": 0.016},
-    {"id": "tt_kh_04", "name": "Mực Cán Tẩm Vị Cay Ngọt Loại 1 Nha Trang", "category": "kho-cac-loai", "shop_id": "sp_namtaphoa", "shop_name": "Nam Tạp Hóa Store", "price": 145000, "rating": 4.8, "reviews": 3800, "sold_base": 42000, "daily_growth_rate": 0.011},
-    {"id": "tt_kh_05", "name": "Mực Xé Hấp Nước Dừa Thơm Ngọt Mềm Sợi", "category": "kho-cac-loai", "shop_id": "sp_taphoacoc", "shop_name": "Tạp Hóa Cóc", "price": 120000, "rating": 4.9, "reviews": 7300, "sold_base": 88000, "daily_growth_rate": 0.021},
+    {"id": "tt_kh_01", "name": "Khô Gà Lá Chanh Xé Cay Đậm Vị Hũ 500g", "category": "kho-cac-loai", "shop_id": "sp_bichanvat", "shop_name": "Bích Ăn Vặt Official", "price": 85000, "rating": 4.8, "reviews": 9600, "sold_base": 115000, "daily_growth_rate": 0.014, "image_url": "https://images.unsplash.com/photo-1562967914-608f82629710?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_kh_02", "name": "Khô Bò Miếng Mềm Cay Tẩm Ướp Gia Truyền", "category": "kho-cac-loai", "shop_id": "sp_meanvat99", "shop_name": "Mê Ăn Vặt 99", "price": 165000, "rating": 4.9, "reviews": 6400, "sold_base": 78000, "daily_growth_rate": 0.019, "image_url": "https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_kh_03", "name": "Khô Heo Cháy Tỏi Giòn Rụm Hũ Lớn 300g", "category": "kho-cac-loai", "shop_id": "sp_taphoamero", "shop_name": "Tạp Hóa Mero", "price": 95000, "rating": 4.7, "reviews": 4120, "sold_base": 54000, "daily_growth_rate": 0.016, "image_url": "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_kh_04", "name": "Mực Cán Tẩm Vị Cay Ngọt Loại 1 Nha Trang", "category": "kho-cac-loai", "shop_id": "sp_namtaphoa", "shop_name": "Nam Tạp Hóa Store", "price": 145000, "rating": 4.8, "reviews": 3800, "sold_base": 42000, "daily_growth_rate": 0.011, "image_url": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_kh_05", "name": "Mực Xé Hấp Nước Dừa Thơm Ngọt Mềm Sợi", "category": "kho-cac-loai", "shop_id": "sp_taphoacoc", "shop_name": "Tạp Hóa Cóc", "price": 120000, "rating": 4.9, "reviews": 7300, "sold_base": 88000, "daily_growth_rate": 0.021, "image_url": "https://images.unsplash.com/photo-1559847844-5315695dadae?w=500&auto=format&fit=crop&q=80"},
 
     # Cơm Cháy
-    {"id": "tt_cc_01", "name": "Cơm Cháy Đáy Nồi Siêu Chà Bông Sốt Mắm Hành (Túi 500g)", "category": "com-chay", "shop_id": "sp_meanvat99", "shop_name": "Mê Ăn Vặt 99", "price": 75000, "rating": 4.9, "reviews": 12800, "sold_base": 162000, "daily_growth_rate": 0.024},
-    {"id": "tt_cc_02", "name": "Cơm Cháy Lắc Khô Gà Lá Chanh Cay Giòn", "category": "com-chay", "shop_id": "sp_bichanvat", "shop_name": "Bích Ăn Vặt Official", "price": 65000, "rating": 4.8, "reviews": 6900, "sold_base": 91000, "daily_growth_rate": 0.017},
-    {"id": "tt_cc_03", "name": "Da Heo Chiên Giòn Lắc Muối Ớt Hành Phi Không Ngấy", "category": "com-chay", "shop_id": "sp_taphoacoc", "shop_name": "Tạp Hóa Cóc", "price": 55000, "rating": 4.7, "reviews": 4500, "sold_base": 61000, "daily_growth_rate": 0.020},
-    {"id": "tt_cc_04", "name": "Rong Biển Cháy Tỏi Mè Rang Giòn Tan Ăn Vặt Thảo Mộc", "category": "com-chay", "shop_id": "sp_tiemanvat", "shop_name": "Tiệm Ăn Vặt Tuổi Thơ", "price": 49000, "rating": 4.8, "reviews": 3100, "sold_base": 47000, "daily_growth_rate": 0.013},
+    {"id": "tt_cc_01", "name": "Cơm Cháy Đáy Nồi Siêu Chà Bông Sốt Mắm Hành (Túi 500g)", "category": "com-chay", "shop_id": "sp_meanvat99", "shop_name": "Mê Ăn Vặt 99", "price": 75000, "rating": 4.9, "reviews": 12800, "sold_base": 162000, "daily_growth_rate": 0.024, "image_url": "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_cc_02", "name": "Cơm Cháy Lắc Khô Gà Lá Chanh Cay Giòn", "category": "com-chay", "shop_id": "sp_bichanvat", "shop_name": "Bích Ăn Vặt Official", "price": 65000, "rating": 4.8, "reviews": 6900, "sold_base": 91000, "daily_growth_rate": 0.017, "image_url": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_cc_03", "name": "Da Heo Chiên Giòn Lắc Muối Ớt Hành Phi Không Ngấy", "category": "com-chay", "shop_id": "sp_taphoacoc", "shop_name": "Tạp Hóa Cóc", "price": 55000, "rating": 4.7, "reviews": 4500, "sold_base": 61000, "daily_growth_rate": 0.020, "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_cc_04", "name": "Rong Biển Cháy Tỏi Mè Rang Giòn Tan Ăn Vặt Thảo Mộc", "category": "com-chay", "shop_id": "sp_tiemanvat", "shop_name": "Tiệm Ăn Vặt Tuổi Thơ", "price": 49000, "rating": 4.8, "reviews": 3100, "sold_base": 47000, "daily_growth_rate": 0.013, "image_url": "https://images.unsplash.com/photo-1607301405390-d831c242f59b?w=500&auto=format&fit=crop&q=80"},
 
     # Bánh Kẹo Đặc Sản
-    {"id": "tt_bk_01", "name": "Bánh Pía Mini Mix Vị Lava Mochi Trứng Muối Tan Chảy", "category": "an-vat-khac", "shop_id": "sp_meanvat99", "shop_name": "Mê Ăn Vặt 99", "price": 69000, "rating": 4.9, "reviews": 15400, "sold_base": 210000, "daily_growth_rate": 0.028},
-    {"id": "tt_bk_02", "name": "Kẹo Chuối Tươi Bến Tre Dẻo Thơm Mè Gừng", "category": "an-vat-khac", "shop_id": "sp_shopnam027", "shop_name": "Shop Nam Đặc Sản", "price": 50000, "rating": 4.8, "reviews": 8200, "sold_base": 118000, "daily_growth_rate": 0.016},
-    {"id": "tt_bk_03", "name": "Kẹo Dồi Lạc Truyền Thống Vỏ Mỏng Giòn Nhân Đậu Phộng", "category": "an-vat-khac", "shop_id": "sp_namtaphoa", "shop_name": "Nam Tạp Hóa Store", "price": 45000, "rating": 4.7, "reviews": 3900, "sold_base": 53000, "daily_growth_rate": 0.012},
-    {"id": "tt_bk_04", "name": "Bánh Dừa Nướng Sầu Riêng Giòn Rụm Thơm Béo", "category": "an-vat-khac", "shop_id": "sp_taphoacoc", "shop_name": "Tạp Hóa Cóc", "price": 38000, "rating": 4.8, "reviews": 4600, "sold_base": 67000, "daily_growth_rate": 0.015},
-    {"id": "tt_bk_05", "name": "Bánh Đậu Xanh Mochi Trứng Muối Vỏ Mềm Thơm Béo", "category": "an-vat-khac", "shop_id": "sp_taphoamero", "shop_name": "Tạp Hóa Mero", "price": 58000, "rating": 4.9, "reviews": 5800, "sold_base": 74000, "daily_growth_rate": 0.022},
+    {"id": "tt_bk_01", "name": "Bánh Pía Mini Mix Vị Lava Mochi Trứng Muối Tan Chảy", "category": "an-vat-khac", "shop_id": "sp_meanvat99", "shop_name": "Mê Ăn Vặt 99", "price": 69000, "rating": 4.9, "reviews": 15400, "sold_base": 210000, "daily_growth_rate": 0.028, "image_url": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_bk_02", "name": "Kẹo Chuối Tươi Bến Tre Dẻo Thơm Mè Gừng", "category": "an-vat-khac", "shop_id": "sp_shopnam027", "shop_name": "Shop Nam Đặc Sản", "price": 50000, "rating": 4.8, "reviews": 8200, "sold_base": 118000, "daily_growth_rate": 0.016, "image_url": "https://images.unsplash.com/photo-1582293041079-7814c2f12063?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_bk_03", "name": "Kẹo Dồi Lạc Truyền Thống Vỏ Mỏng Giòn Nhân Đậu Phộng", "category": "an-vat-khac", "shop_id": "sp_namtaphoa", "shop_name": "Nam Tạp Hóa Store", "price": 45000, "rating": 4.7, "reviews": 3900, "sold_base": 53000, "daily_growth_rate": 0.012, "image_url": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_bk_04", "name": "Bánh Dừa Nướng Sầu Riêng Giòn Rụm Thơm Béo", "category": "an-vat-khac", "shop_id": "sp_taphoacoc", "shop_name": "Tạp Hóa Cóc", "price": 38000, "rating": 4.8, "reviews": 4600, "sold_base": 67000, "daily_growth_rate": 0.015, "image_url": "https://images.unsplash.com/photo-1559620192-032c4bc4674e?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_bk_05", "name": "Bánh Đậu Xanh Mochi Trứng Muối Vỏ Mềm Thơm Béo", "category": "an-vat-khac", "shop_id": "sp_taphoamero", "shop_name": "Tạp Hóa Mero", "price": 58000, "rating": 4.9, "reviews": 5800, "sold_base": 74000, "daily_growth_rate": 0.022, "image_url": "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=500&auto=format&fit=crop&q=80"},
 
     # Đồ Uống
-    {"id": "tt_du_01", "name": "Cà Phê Muối Vị Phô Mai Hòa Tan Thơm Béo Chuẩn Vị Huế (Hộp 10 gói)", "category": "do-uong", "shop_id": "sp_bichanvat", "shop_name": "Bích Ăn Vặt Official", "price": 59000, "rating": 4.9, "reviews": 11800, "sold_base": 134000, "daily_growth_rate": 0.026},
-    {"id": "tt_du_02", "name": "Set Tự Nấu Chè Dưỡng Nhan Tuyết Yến 14 Vị Thanh Mát (10-12 Chén)", "category": "do-uong", "shop_id": "sp_namtaphoa", "shop_name": "Nam Tạp Hóa Store", "price": 68000, "rating": 4.8, "reviews": 9200, "sold_base": 105000, "daily_growth_rate": 0.019},
-    {"id": "tt_du_03", "name": "Trà Mãng Cầu Tươi Đậm Vị Giải Nhiệt Mùa Hè", "category": "do-uong", "shop_id": "sp_tiemanvat", "shop_name": "Tiệm Ăn Vặt Tuổi Thơ", "price": 45000, "rating": 4.7, "reviews": 4100, "sold_base": 49000, "daily_growth_rate": 0.017},
-    {"id": "tt_du_04", "name": "Trà Sữa Tự Pha Trân Châu Đường Đen Set 6 Ly Đậm Vị", "category": "do-uong", "shop_id": "sp_meanvat99", "shop_name": "Mê Ăn Vặt 99", "price": 79000, "rating": 4.8, "reviews": 7500, "sold_base": 92000, "daily_growth_rate": 0.021},
+    {"id": "tt_du_01", "name": "Cà Phê Muối Vị Phô Mai Hòa Tan Thơm Béo Chuẩn Vị Huế (Hộp 10 gói)", "category": "do-uong", "shop_id": "sp_bichanvat", "shop_name": "Bích Ăn Vặt Official", "price": 59000, "rating": 4.9, "reviews": 11800, "sold_base": 134000, "daily_growth_rate": 0.026, "image_url": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_du_02", "name": "Set Tự Nấu Chè Dưỡng Nhan Tuyết Yến 14 Vị Thanh Mát (10-12 Chén)", "category": "do-uong", "shop_id": "sp_namtaphoa", "shop_name": "Nam Tạp Hóa Store", "price": 68000, "rating": 4.8, "reviews": 9200, "sold_base": 105000, "daily_growth_rate": 0.019, "image_url": "https://images.unsplash.com/photo-1558857563-b371033873b8?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_du_03", "name": "Trà Mãng Cầu Tươi Đậm Vị Giải Nhiệt Mùa Hè", "category": "do-uong", "shop_id": "sp_tiemanvat", "shop_name": "Tiệm Ăn Vặt Tuổi Thơ", "price": 45000, "rating": 4.7, "reviews": 4100, "sold_base": 49000, "daily_growth_rate": 0.017, "image_url": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop&q=80"},
+    {"id": "tt_du_04", "name": "Trà Sữa Tự Pha Trân Châu Đường Đen Set 6 Ly Đậm Vị", "category": "do-uong", "shop_id": "sp_meanvat99", "shop_name": "Mê Ăn Vặt 99", "price": 79000, "rating": 4.8, "reviews": 7500, "sold_base": 92000, "daily_growth_rate": 0.021, "image_url": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=500&auto=format&fit=crop&q=80"},
 ]
 
 def init_duckdb():
@@ -121,7 +121,7 @@ def run_pipeline():
         """, (p["shop_id"], p["shop_name"], p["rating"], True if "Official" in p["shop_name"] else False))
 
         affiliate_url = f"https://www.tiktok.com/shop/product/{p['id']}?ref=foodlenlut"
-        img_url = f"/images/products/{p['id']}.jpg"
+        img_url = p.get("image_url", f"/images/products/{p['id']}.jpg")
 
         conn.execute("""
         INSERT INTO dim_product (product_id, product_name, category_slug, shop_id, current_price, image_url, affiliate_url, rating_star, review_count)
@@ -129,6 +129,7 @@ def run_pipeline():
         ON CONFLICT (product_id) DO UPDATE SET
             product_name = EXCLUDED.product_name,
             current_price = EXCLUDED.current_price,
+            image_url = EXCLUDED.image_url,
             rating_star = EXCLUDED.rating_star,
             review_count = EXCLUDED.review_count;
         """, (p["id"], p["name"], p["category"], p["shop_id"], p["price"], img_url, affiliate_url, p["rating"], p["reviews"]))
