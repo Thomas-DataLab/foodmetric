@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   X,
   Store,
@@ -12,6 +12,9 @@ import {
   Eye,
   Heart,
   ShoppingBag,
+  Film,
+  Play,
+  Volume2,
 } from "lucide-react";
 import { ProductItem } from "@/types";
 import { formatVND, formatCompactVND, formatNumber, formatCompactNumber } from "@/lib/utils";
@@ -22,7 +25,15 @@ interface VideoModalProps {
 }
 
 export const VideoModal: React.FC<VideoModalProps> = ({ product, onClose }) => {
-  // Close on Escape key press
+  const [playMode, setPlayMode] = useState<"native" | "embed">("native");
+  const [nativeVideoError, setNativeVideoError] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Reset state when product changes
+    setPlayMode("native");
+    setNativeVideoError(false);
+  }, [product]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -35,7 +46,6 @@ export const VideoModal: React.FC<VideoModalProps> = ({ product, onClose }) => {
 
   if (!product) return null;
 
-  // Extract TikTok video ID from URL if available
   let videoId = "";
   if (product.video_url) {
     const match = product.video_url.match(/\/video\/(\d+)/);
@@ -44,11 +54,13 @@ export const VideoModal: React.FC<VideoModalProps> = ({ product, onClose }) => {
     }
   }
 
+  const nativeVideoSrc = `/videos/${product.product_id}.mp4`;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -59,17 +71,57 @@ export const VideoModal: React.FC<VideoModalProps> = ({ product, onClose }) => {
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-900 transition-colors shadow-xs"
+          className="absolute right-4 top-4 z-30 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors shadow-sm"
           aria-label="Đóng modal"
         >
           <X className="h-5 w-5" />
         </button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 max-h-[85vh] overflow-y-auto">
-          {/* Left Column: TikTok Video Player */}
-          <div className="lg:col-span-6 bg-slate-950 flex flex-col items-center justify-center p-4 sm:p-6 min-h-[480px]">
-            {videoId ? (
-              <div className="w-full max-w-[325px] aspect-[9/16] overflow-hidden rounded-2xl bg-black shadow-2xl border border-slate-800">
+        <div className="grid grid-cols-1 lg:grid-cols-12 max-h-[88vh] overflow-y-auto">
+          {/* Left Column: Video Player Container */}
+          <div className="lg:col-span-6 bg-slate-950 flex flex-col items-center justify-between p-4 sm:p-6 min-h-[520px]">
+            {/* Player Mode Switcher */}
+            <div className="w-full flex items-center justify-center gap-2 mb-3">
+              <button
+                type="button"
+                onClick={() => setPlayMode("native")}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                  playMode === "native" && !nativeVideoError
+                    ? "bg-emerald-500 text-slate-950 shadow-xs"
+                    : "bg-slate-800 text-slate-400 hover:text-white"
+                }`}
+              >
+                Phát Video HD Trực Tiếp
+              </button>
+              <button
+                type="button"
+                onClick={() => setPlayMode("embed")}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                  playMode === "embed" || nativeVideoError
+                    ? "bg-purple-600 text-white shadow-xs"
+                    : "bg-slate-800 text-slate-400 hover:text-white"
+                }`}
+              >
+                Khung Nhúng TikTok
+              </button>
+            </div>
+
+            {/* Video Player Display */}
+            <div className="relative w-full max-w-[325px] aspect-[9/16] overflow-hidden rounded-2xl bg-black shadow-2xl border border-slate-800 flex items-center justify-center">
+              {playMode === "native" && !nativeVideoError ? (
+                <video
+                  src={nativeVideoSrc}
+                  poster={product.image_url}
+                  controls
+                  autoPlay
+                  loop
+                  playsInline
+                  onError={() => setNativeVideoError(true)}
+                  className="h-full w-full object-cover"
+                >
+                  Trình duyệt không hỗ trợ thẻ video.
+                </video>
+              ) : videoId ? (
                 <iframe
                   src={`https://www.tiktok.com/embed/v2/${videoId}`}
                   title={product.product_name}
@@ -77,16 +129,20 @@ export const VideoModal: React.FC<VideoModalProps> = ({ product, onClose }) => {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
-              </div>
-            ) : (
-              <div className="text-center p-8 text-slate-400">
-                <ShoppingBag className="mx-auto h-12 w-12 text-slate-600 mb-2" />
-                <p className="text-sm font-medium">Chưa có mã nhúng video trực tiếp</p>
-              </div>
-            )}
+              ) : (
+                <div className="text-center p-6 text-slate-400">
+                  <ShoppingBag className="mx-auto h-12 w-12 text-slate-600 mb-2" />
+                  <p className="text-sm font-medium">Chưa có video cho sản phẩm này</p>
+                </div>
+              )}
+            </div>
+
+            {/* Status Footer */}
             <div className="mt-3 text-center">
               <span className="text-[11px] text-slate-400">
-                Đang phát trực tiếp từ máy chủ TikTok
+                {playMode === "native" && !nativeVideoError
+                  ? "✓ Video MP4 mượt mà 100% không bị chặn cookie/iframe"
+                  : "Đang truyền phát qua máy chủ TikTok Embed"}
               </span>
             </div>
           </div>
@@ -155,8 +211,8 @@ export const VideoModal: React.FC<VideoModalProps> = ({ product, onClose }) => {
                   <div className="mt-1 text-xl font-extrabold font-lexend text-emerald-700">
                     +{formatNumber(product.estimated_daily_units)}
                   </div>
-                  <div className="text-[10px] text-slate-400">
-                    Tổng bán: {formatNumber(product.historical_sold)}
+                  <div className="text-[10px] text-slate-400 font-lexend">
+                    Tổng: {formatNumber(product.historical_sold)}
                   </div>
                 </div>
               </div>
