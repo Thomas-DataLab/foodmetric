@@ -4,7 +4,7 @@
     "snapshot_date": "2026-09-17",
     "data_source_mode": "Live TikTok Competitor Affiliate Ingestion (CDP 9223 Verified)",
     "total_products_indexed": 17,
-    "total_estimated_daily_gmv": 1999880000,
+    "total_estimated_daily_gmv": 1996220000,
     "total_estimated_daily_units": 36200
   },
   "categories": {
@@ -118,7 +118,7 @@
     "top_category": {
       "slug": "an-vat-khac",
       "name": "Bánh Kẹo & Đặc Sản Vùng Miền",
-      "gmv": 709520000
+      "gmv": 733310000
     },
     "top_viral_hook": {
       "hook_text": "Bánh pía mini lava trứng muối tan chảy mix vị mochi",
@@ -529,27 +529,27 @@
     },
     {
       "rank_overall": 17,
-      "rank_in_category": 2,
+      "rank_in_category": 8,
       "product_id": "tt_kh_04",
-      "product_name": "Hành Khô Tím Ấn Độ Thơm Nồng Túi Quai Xách",
-      "category_slug": "kho-cac-loai",
+      "product_name": "Kẹo Dẻo Mix 3 Vị Dẻo Sữa Xoắn Ốc Bích Ăn Vặt",
+      "category_slug": "an-vat-khac",
       "creator_handle": "bichanvat68",
       "creator_name": "Bích Ăn Vặt",
       "creator_followers": "18.1K",
       "video_url": "https://www.tiktok.com/@bichanvat68/video/7686152132994665748",
       "video_views": 249,
       "video_likes": 7,
-      "current_price": 45000,
+      "current_price": 39000,
       "image_url": "/images/products/tt_kh_04.jpg",
       "affiliate_url": "https://www.tiktok.com/@bichanvat68/video/7686152132994665748",
-      "product_rating": 4.7,
+      "product_rating": 4.8,
       "review_count": 3200,
       "shop_id": "sp_namtaphoa",
       "shop_name": "Nam Tạp Hóa Store",
       "is_shop_official": false,
       "historical_sold": 38000,
       "estimated_daily_units": 610,
-      "estimated_daily_gmv": 27450000,
+      "estimated_daily_gmv": 23790000,
       "anomaly_flag": false
     }
   ]
