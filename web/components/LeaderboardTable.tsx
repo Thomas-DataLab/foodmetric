@@ -12,7 +12,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import { ProductItem } from "@/types";
-import { formatVND, formatCompactVND, formatNumber } from "@/lib/utils";
+import { formatVND, formatCompactVND, formatNumber, formatCompactNumber } from "@/lib/utils";
 
 interface LeaderboardTableProps {
   products: ProductItem[];
@@ -160,6 +160,22 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                           <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
                           {item.product_rating}
                         </span>
+                        {item.creator_handle && (
+                          <>
+                            <span>•</span>
+                            <a
+                              href={item.video_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-[11px] font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-md hover:bg-purple-100"
+                            >
+                              <span>KOC: @{item.creator_handle}</span>
+                              {item.video_views && (
+                                <span className="font-lexend text-purple-900">({formatCompactNumber(item.video_views)} views)</span>
+                              )}
+                            </a>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>

@@ -4,6 +4,12 @@ export interface ProductItem {
   product_id: string;
   product_name: string;
   category_slug: string;
+  creator_handle?: string;
+  creator_name?: string;
+  creator_followers?: string;
+  video_url?: string;
+  video_views?: number;
+  video_likes?: number;
   current_price: number;
   image_url: string;
   affiliate_url: string;
