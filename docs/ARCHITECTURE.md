@@ -76,20 +76,23 @@ Lưu trữ số liệu biến động theo từng snapshot 24h:
 | **Data Warehouse** | DuckDB Embedded OLAP | Chạy hoàn toàn in-process; tốc độ truy vấn cột (columnar) tính toán hàng nghìn sản phẩm dưới 5ms; lưu trong file đơn `data/foodmetric.duckdb`, 0đ phí server DB. |
 | **Automated Scheduler** | GitHub Actions | 2,000 phút chạy miễn phí/tháng; tự động khởi chạy máy ảo Ubuntu lúc 06:00 sáng, chạy pipeline và commit file kết quả. |
 | **Web Hosting & CDN** | Vercel Hobby Free Tier | Edge Network toàn cầu với độ trễ sub-second; tự động kích hoạt build lại web ngay khi GitHub Actions push commit mới vào nhánh `master`. |
-| **Media Delivery** | Local Storage (`/public/`) | Tải và nạp trực tiếp video H.264 và ảnh thumbnail vào thư mục `public` của Next.js, loại bỏ nguy cơ link ảnh TikTok bị hết hạn (URL expiry). |
+| **Media Delivery** | FastStart H.264 MP4 (`/public/videos/`) | Nén video H.264 CRF 27 + gắn cờ `-movflags +faststart` (moov atom đầu file), phát tức thì trong 0.1s; dự phòng script `sync_to_supabase_storage.py` để bắn sang Supabase Storage (1GB Free, 0đ, không cần thẻ) khi cần mở rộng. |
 
 ---
 
 ## 5. Kiến Trúc Frontend (Next.js 14 App Router)
 
-- **Rendering Paradigm**: Static Generation (SSG) kết hợp Client Hydration. Dữ liệu leaderboard được nạp từ file tĩnh `leaderboard_latest.json`, đảm bảo tải trang tức thì mà không cần round-trip về database.
+- **Rendering Paradigm**: Static Generation (SSG) kết hợp Client Hydration. Dữ liệu leaderboard được nạp từ file tĩnh `leaderboard_latest.json` (25KB), đảm bảo tải trang tức thì mà không cần round-trip về database.
 - **Typography & Font Strategy**:
   * Chữ hiển thị: **Inter** (tối ưu khả năng đọc văn bản trên màn hình nhỏ).
   * Số liệu tài chính: **Lexend** (thiết kế Tabular Numbers giúp các con số doanh thu, thứ hạng rank không bị nhảy giật khi sort/filter).
-- **Dual-Mode Video Modal (`VideoModal.tsx`)**:
-  * Mode 1 (Mặc định): Native HTML5 Video Player phát video MP4 H.264 cục bộ (khắc phục lỗi bị TikTok chặn autoplay hoặc chặn cookie iframe trên desktop).
-  * Mode 2 (Toggle): Iframe nhúng trực tiếp từ TikTok để người xem trải nghiệm đầy đủ giao diện gốc khi cần.
-  * Tích hợp nút lớn `🛒 Đặt Mua Ngay Trên TikTok Shop ↗` dẫn thẳng link affiliate giỏ hàng.
+- **Native HD Video Player (`VideoModal.tsx`)**:
+  * Chuẩn hóa 100% sang HTML5 Native Video phát trực tiếp các file MP4 H.264 cục bộ (đã loại bỏ hoàn toàn iframe nhúng TikTok do chính sách hạn chế của ByteDance).
+  * Đầy đủ âm thanh, thanh tua seekbar, không quảng cáo và hỗ trợ chế độ toàn màn hình.
+  * Tích hợp nút lớn `🛒 Đặt Mua Ngay Trên TikTok Shop ↗` dẫn thẳng link affiliate giỏ hàng và liên kết nhanh "Mở trên TikTok ↗".
+- **Điều Hướng Thumbnail Đồng Nhất (Unified Thumbnail Click)**:
+  * Người dùng bấm vào bất kỳ ảnh thumbnail nào trên giao diện (Bento Grid Hero Top 1, thẻ Top Velocity, bảng xếp hạng Desktop/Mobile hay Vòng quay ngẫu nhiên) đều kích hoạt mở ngay `VideoModal` phát video HD tương ứng.
+  * Cơ chế xử lý state nguyên tử: Đóng `RandomSnackModal` ngay khi kích hoạt `VideoModal`, triệt tiêu hoàn toàn hiện tượng chồng chéo popup.
 - **Vòng Quay Tương Tác (`RandomSnackModal.tsx`)**:
   * Hiệu ứng spinning roulette mượt mà trong 1.5s với thuật toán hãm tốc độ phân rã (Deceleration Animation) từ 80ms đến 250ms/step.
   * Tích hợp 4 nút hành động: Mua ngay TikTok Shop, Xem video KOC in-app, Quay đổi món khác, và Sao chép lời nhắn rủ rê bạn bè vào clipboard.

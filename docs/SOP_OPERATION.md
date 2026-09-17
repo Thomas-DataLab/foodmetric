@@ -84,21 +84,28 @@ Khi phát hiện một kênh KOC đồ ăn vặt mới đang viral hoặc một 
          "image_url": "/images/products/tt_7474235228450589960.jpg"
      }
      ```
-3. **Bước 3: Tải ảnh bìa & video về máy**:
+3. **Bước 3: Tải ảnh bìa & nén video chuẩn FastStart**:
    - Tải thumbnail về: `web/public/images/products/[id].jpg`
-   - Tải video gốc sạch về: `web/public/videos/[id].mp4`
-4. **Bước 4: Chạy lại pipeline**:
-   `python scraper/pipeline.py` -> Xong!
+   - Nén và tối ưu video H.264 phát tức thì:
+     ```bash
+     ffmpeg -y -i raw_video.mp4 -vf "scale=720:1280:flags=lanczos" -c:v libx264 -preset fast -crf 27 -b:v 700k -c:a aac -b:a 64k -movflags +faststart web/public/videos/[id].mp4
+     ```
+4. **Bước 4: Chạy lại pipeline & Xuất bản**:
+   ```bash
+   python scraper/pipeline.py
+   # Tùy chọn đồng bộ lên Supabase Storage (nếu có .env.local):
+   python scripts/sync_to_supabase_storage.py
+   ```
 
 ---
 
 ## 4. Cẩm Nang Xử Lý Sự Cố (Troubleshooting Matrix)
 
-### Sự cố 1: Video trong popup modal bị đứng hình, chỉ nghe thấy tiếng
-- **Nguyên nhân**: Stream video gốc tải về từ TikTok được mã hóa bằng codec HEVC (H.265) hoặc VP9 không được hỗ trợ mặc định trên một số trình duyệt web máy tính.
-- **Cách khắc phục**: Dùng FFmpeg chuyển mã (transcode) video sang chuẩn H.264 phổ quát:
+### Sự cố 1: Video trong popup modal bị đứng hình hoặc không tải được
+- **Nguyên nhân**: File video thiếu cờ faststart hoặc codec HEVC (H.265) không tương thích trình duyệt.
+- **Cách khắc phục**: Dùng FFmpeg chuyển mã (transcode) với cờ `+faststart`:
   ```bash
-  ffmpeg -y -i raw_video.mp4 -c:v libx264 -preset fast -crf 22 -c:a aac -b:a 128k web/public/videos/[id].mp4
+  ffmpeg -y -i raw_video.mp4 -vf "scale=720:1280" -c:v libx264 -preset fast -crf 27 -c:a aac -b:a 64k -movflags +faststart web/public/videos/[id].mp4
   ```
 
 ### Sự cố 2: Vercel không tự động build lại sau khi cập nhật dữ liệu
