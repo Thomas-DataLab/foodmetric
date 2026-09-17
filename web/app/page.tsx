@@ -33,7 +33,7 @@ export default function HomePage() {
         const json: DashboardData = await res.json();
         setData(json);
       }
-    } catch (err: unknown) {
+    } catch {
       // Graceful fallback to initialData
     }
   };
@@ -93,7 +93,7 @@ export default function HomePage() {
   }, [data]);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col selection:bg-emerald-100 selection:text-emerald-800">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col selection:bg-emerald-100 selection:text-emerald-800 pb-16 sm:pb-0">
       <Navbar
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
@@ -168,6 +168,42 @@ export default function HomePage() {
         {/* Bento Grid (4-Card Summary) */}
         <BentoGrid kpis={data.bento_kpis} onSelectProduct={setSelectedProduct} />
 
+        {/* Community & Channel Banner */}
+        <section className="rounded-2xl border border-rose-200/70 bg-gradient-to-r from-rose-50/80 via-white to-amber-50/80 p-4 sm:p-6 shadow-xs">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="space-y-1 max-w-2xl">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                🔥 Đồng Hành Cùng Kênh Food Lén Lút
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600">
+                Bạn mê đồ ăn vặt hoặc đang tìm nguồn hàng hot trend nổ đơn? Follow ngay kênh TikTok @foodlenlut để xem video review thực tế, săn voucher độc quyền 20k-50k và cập nhật món mới mỗi ngày!
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+              <a
+                href="https://www.tiktok.com/@foodlenlut"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-rose-700 transition-all"
+              >
+                ✨ Khám Phá Kênh @foodlenlut ↗
+              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  if (typeof window !== "undefined" && navigator?.clipboard) {
+                    navigator.clipboard.writeText(window.location.href);
+                    alert("Đã sao chép link FoodMetric để chia sẻ!");
+                  }
+                }}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-xs sm:text-sm font-bold text-slate-700 shadow-xs hover:bg-slate-50 transition-all"
+              >
+                🔗 Chia Sẻ Web Với Bạn Bè
+              </button>
+            </div>
+          </div>
+        </section>
+
         {/* Category Tabs Filter */}
         <div className="pt-2">
           <CategoryTabs
@@ -190,6 +226,26 @@ export default function HomePage() {
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
       />
+
+      {/* Sticky Bottom Mobile Bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-2.5 flex items-center justify-between gap-2 shadow-lg sm:hidden">
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-rose-100 text-sm">
+            🔥
+          </span>
+          <span className="text-xs text-slate-800 font-medium truncate">
+            Mê ăn vặt? Follow @foodlenlut nhận deal
+          </span>
+        </div>
+        <a
+          href="https://www.tiktok.com/@foodlenlut"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="shrink-0 inline-flex items-center gap-1 rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-rose-700 transition-all"
+        >
+          Follow ↗
+        </a>
+      </div>
 
       <footer className="mt-12 border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
         <div className="mx-auto max-w-container px-4 flex flex-col sm:flex-row items-center justify-between gap-3">

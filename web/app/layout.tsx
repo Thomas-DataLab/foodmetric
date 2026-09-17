@@ -15,9 +15,41 @@ const lexend = Lexend({
 });
 
 export const metadata: Metadata = {
-  title: "FoodMetric — Radar Sản Phẩm Ăn Vặt Hot TikTok Shop",
+  metadataBase: new URL("https://foodmetric.vercel.app"),
+  title: "FoodMetric — Radar Săn Deal & Món Ăn Vặt Hot TikTok Shop",
   description:
-    "Bảng xếp hạng doanh số, velocity và radar sản phẩm ăn vặt bùng nổ trên TikTok Shop Việt Nam theo thời gian thực.",
+    "Bảng xếp hạng món ăn vặt nổ đơn nhất TikTok Shop Việt Nam. Bóc tách doanh thu 24h, video viral triệu view và săn deal giảm 20% - 50% cùng Kênh Food Lén Lút.",
+  keywords: [
+    "đồ ăn vặt tiktok",
+    "bánh tráng phơi sương",
+    "bánh pía lava",
+    "săn deal tiktok shop",
+    "food lén lút",
+    "món ăn vặt hot trend",
+  ],
+  openGraph: {
+    title: "FoodMetric — Top Món Ăn Vặt Nổ Đơn Nhất TikTok Shop Hôm Nay",
+    description:
+      "Bóc tách doanh thu 24h, video viral triệu view & săn deal giảm 20% - 50% cùng Food Lén Lút.",
+    url: "https://foodmetric.vercel.app",
+    siteName: "FoodMetric",
+    images: [
+      {
+        url: "/images/og-card.png",
+        width: 1200,
+        height: 630,
+        alt: "FoodMetric OpenGraph",
+      },
+    ],
+    locale: "vi_VN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FoodMetric — Top Món Ăn Vặt Nổ Đơn Nhất TikTok Shop Hôm Nay",
+    description: "Bóc tách doanh số 24h & deal ăn vặt cực hời TikTok Shop.",
+    images: ["/images/og-card.png"],
+  },
   icons: {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>",
   },

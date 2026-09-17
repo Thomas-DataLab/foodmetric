@@ -41,6 +41,19 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-xs">
+      {/* Top Announcement Bar */}
+      <div className="bg-gradient-to-r from-rose-600 via-pink-600 to-amber-500 text-white py-2 px-4 text-xs sm:text-sm font-medium flex items-center justify-center gap-2 shadow-xs text-center flex-wrap">
+        <span>🔥 Kênh Food Lén Lút — Review & Săn Deal Đồ Ăn Vặt Giảm 20% - 50% TikTok Shop Mỗi Ngày!</span>
+        <a
+          href="https://www.tiktok.com/@foodlenlut"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-2 inline-flex items-center gap-1 rounded-full bg-white text-rose-600 px-3 py-0.5 text-xs font-bold shadow-xs hover:bg-rose-50 transition-all"
+        >
+          Ghé Kênh TikTok ↗
+        </a>
+      </div>
+
       <div className="mx-auto flex max-w-container flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         {/* Brand & Status Indicator */}
         <div className="flex items-center justify-between">
@@ -94,17 +107,28 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
         </div>
 
-        {/* Right Status Badge */}
-        <div className="hidden lg:flex items-center gap-4 text-xs">
-          <div className="flex items-center gap-1.5 text-slate-500">
-            <Radio className="h-3.5 w-3.5 text-emerald-600" />
-            <span>Ngày chốt: <strong className="font-lexend text-slate-800">{formattedDate}</strong></span>
-          </div>
-          {typeof totalProducts === "number" && (
-            <div className="rounded-lg bg-slate-100 px-2.5 py-1 text-slate-600 border border-slate-200">
-              <strong className="font-lexend text-slate-900">{totalProducts}</strong> SKU theo dõi
+        {/* Right Status Badge & TikTok CTA */}
+        <div className="flex items-center gap-3 justify-between sm:justify-end">
+          <a
+            href="https://www.tiktok.com/@foodlenlut"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm shadow-rose-500/20 hover:from-rose-600 hover:to-pink-700 transition-all whitespace-nowrap"
+          >
+            🔥 Kênh Food Lén Lút
+          </a>
+
+          <div className="hidden lg:flex items-center gap-4 text-xs">
+            <div className="flex items-center gap-1.5 text-slate-500">
+              <Radio className="h-3.5 w-3.5 text-emerald-600" />
+              <span>Ngày chốt: <strong className="font-lexend text-slate-800">{formattedDate}</strong></span>
             </div>
-          )}
+            {typeof totalProducts === "number" && (
+              <div className="rounded-lg bg-slate-100 px-2.5 py-1 text-slate-600 border border-slate-200">
+                <strong className="font-lexend text-slate-900">{totalProducts}</strong> SKU theo dõi
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>
