@@ -30,11 +30,13 @@ Website **FoodMetric** không đơn thuần là một bảng hiển thị dữ l
   ├── Chạm 1: Top Announcement Bar (Đỉnh Header: "Ghé Kênh TikTok ↗")
   ├── Chạm 2: Navbar CTA Button ("🔥 Kênh Food Lén Lút")
   ├── Chạm 3: Kho Săn Deal Thật (Freeship 45k, Deal 69k, Deal 45k + Nút "Lưu Thêm Voucher Toàn Sàn ↗")
-  ├── Chạm 4: Đấu Trường Ăn Vặt Snack Battle (Kích thích vote tranh luận + Nút "Kêu gọi bạn bè vào bình chọn 🗳️")
-  ├── Chạm 5: Bộ Lọc Hạt Dẻ Dưới 50k & Khẩu Vị (Đánh trúng túi tiền học sinh sinh viên)
-  ├── Chạm 6: Vòng Quay "🎲 Hôm Nay Ăn Gì?" (Kích thích rủ bạn bè gom đơn)
-  ├── Chạm 7: Community Funnel Banner ("✨ Khám Phá Kênh @foodlenlut ↗")
-  └── Chạm 8: Nút "🛒 Mua Ngay ↗" & Thumbnail Click (Chuyển đổi trực tiếp vào giỏ hàng TikTok Shop)
+  ├── Chạm 4: Quẻ Tarot Vận Mệnh Ăn Vặt Mỗi Ngày (Rút quẻ chu kỳ 24h + Khoe bạn bè)
+  ├── Chạm 5: Đấu Trường Ăn Vặt Snack Battle (Kích thích vote tranh luận + Nút "Kêu gọi bạn bè vào bình chọn 🗳️")
+  ├── Chạm 6: Bộ Lọc Hạt Dẻ Dưới 50k & Khẩu Vị (Đánh trúng túi tiền học sinh sinh viên)
+  ├── Chạm 7: Vòng Quay "🎲 Hôm Nay Ăn Gì?" (Kích thích rủ bạn bè gom đơn)
+  ├── Chạm 8: Community Funnel Banner ("✨ Khám Phá Kênh @foodlenlut ↗")
+  ├── Chạm 9: Thanh Điều Hướng Đáy Màn Hình Di Động (Sticky Mobile Bar)
+  └── Chạm 10: Smart TikTok App Launcher & Thumbnail Click (Chuyển đổi trực tiếp vào giỏ hàng TikTok Shop)
                  │
                  ▼
 [ Đích Đến Chuyển Đổi ]

@@ -109,6 +109,24 @@ Hệ thống được thiết kế theo chuẩn **Data Product Engineering** v�
 - Nén video chuẩn H.264 CRF 27 + cờ `-movflags +faststart` giúp video tải tức thì trong 0.1 giây và tiết kiệm 62% dung lượng (giảm từ 196MB xuống 75MB).
 - Dữ liệu vận hành thuần túy qua **DuckDB Embedded OLAP** nội bộ, xuất JSON tĩnh siêu nhẹ (25KB), không tốn chi phí database ngoài.
 
+### 7. Quẻ Tarot Vận Mệnh Ăn Vặt Mỗi Ngày (Daily Snack Tarot Retention Engine)
+- **Chu kỳ 24h nghiêm ngặt (00:00 - 23:59)**: Mỗi ngày người dùng chỉ được rút duy nhất 1 lá bài may mắn (lưu trạng thái qua `localStorage`).
+- **Trạng thái 1 (Chưa rút quẻ)**: Hiển thị 3 lá bài Tarot úp mặt viền vàng linh vật Capybara; người dùng chọn 1 lá bài kích hoạt hiệu ứng xoay lật 3D mượt mà (`rotate-y-180`).
+- **Trạng thái 2 (Đã rút quẻ)**: Mở ra 1 trong 6 lá bài độc quyền (*The Overthinker, The Peacemaker, The Melting Heart, The Happy Chewer, The Awakener, The Spicy Conqueror*), thông điệp vũ trụ `oracle`, món ăn hợp mệnh, giá deal, con số may mắn, đồng hồ đếm ngược thời gian thực đến nửa đêm `00:00`, và 3 nút hành động (Mua Món Hợp Mệnh qua Deep-Link, Xem Video Review in-app, Khoe Quẻ Cho Bạn Bè).
+
+### 8. Smart TikTok App Launcher & Deep-Linking (Zero-Friction Conversion)
+- Triệt tiêu bẫy in-app webview của Facebook, Zalo, Threads, TikTok Bio (vốn làm rơi rụng hơn 80% tỷ lệ chuyển đổi do bắt đăng nhập lại tài khoản).
+- Nhận diện thiết bị thông minh:
+  * **Desktop**: Mở tab web mới thông thường.
+  * **Android**: Kích hoạt Android Intent (`com.zhiliaoapp.musically`) mở thẳng ứng dụng TikTok chính thức có sẵn giỏ hàng và địa chỉ giao hàng của người dùng.
+  * **iOS (iPhone/iPad)**: Kích hoạt Custom Scheme `snssdk1180://` bật ứng dụng TikTok tức thì, kèm bộ hẹn giờ 1.5s tự động fallback về web nếu máy chưa cài app.
+- Tự động sao chép tên món vào clipboard trên điện thoại để hỗ trợ tìm kiếm nhanh nếu cần.
+
+### 9. Trải Nghiệm Di Động Toàn Diện & SEO Chuẩn PWA
+- **PWA Web App Manifest (`/manifest.webmanifest`)**: Hỗ trợ chuẩn "Thêm vào màn hình chính" (Add to Home Screen) trên Safari (iOS) và Chrome (Android), biến web thành ứng dụng độc lập có logo Capybara 3D trên màn hình điện thoại (chi phí 0đ).
+- **Thanh Điều Hướng Đáy Màn Hình (`StickyMobileBar`)**: Thanh công cụ cố định mép dưới cho smartphone (< 768px) hiệu ứng kính mờ `backdrop-blur-md bg-white/95` với 3 nút 1-chạm: Vòng quay ăn xế, Bói quẻ Tarot (chấm đỏ nhấp nháy báo quẻ mới), và Bật thẳng App TikTok.
+- **SEO Google Rich Snippets**: Nhúng Schema.org JSON-LD (`WebSite`, `Organization`, `ItemList`) vào `layout.tsx`, giúp Google bot lập chỉ mục bảng xếp hạng 17 món ăn vặt kèm giá bán và đánh giá sao.
+
 ---
 
 ## 📂 Cấu Trúc Thư Mục Dự Án
@@ -136,13 +154,17 @@ FoodMetric/
 ├── scripts/
 │   └── sync_to_supabase_storage.py  # Công cụ đồng bộ video sang Supabase Storage (0đ, không cần thẻ)
 ├── web/
-│   ├── app/                         # Next.js 14 App Router (layout, page, favicon)
+│   ├── app/                         # Next.js 14 App Router (layout, page, favicon, manifest.ts)
 │   ├── components/                  # UI Components:
-│   │   ├── Navbar.tsx               # Header, thanh thông báo & nút CTA kênh
-│   │   ├── BentoGrid.tsx            # Radar 24h & bóc tách kịch bản viral
-│   │   ├── LeaderboardTable.tsx     # Bảng xếp hạng kèm nút Mua Ngay & Xem Video
-│   │   ├── VideoModal.tsx           # Trình phát video HD in-app Dual-Mode
-│   │   └── RandomSnackModal.tsx     # Vòng quay "Hôm Nay Ăn Gì?" tương tác
+│   │   ├── Navbar.tsx               # Header, thanh thông báo & nút mở Tarot / TikTok
+│   │   ├── BentoGrid.tsx            # Deal thật, Đấu trường ăn vặt & Thẻ tiêu biểu
+│   │   ├── LeaderboardTable.tsx     # Bảng xếp hạng nổ đơn kèm nút Mua Ngay & Xem Video
+│   │   ├── VideoModal.tsx           # Trình phát video HD FastStart in-app
+│   │   ├── RandomSnackModal.tsx     # Vòng quay "Hôm Nay Ăn Gì?" tương tác
+│   │   ├── DailyTarotModal.tsx      # Quẻ Tarot Vận Mệnh Ăn Vặt Mỗi Ngày (chu kỳ 24h)
+│   │   └── StickyMobileBar.tsx      # Thanh công cụ điều hướng đáy màn hình di động
+│   ├── lib/
+│   │   └── tiktokLauncher.ts        # Smart TikTok App Launcher & Deep-Linking Engine
 │   ├── public/                      # Static Assets (Ảnh bìa, Video MP4, Favicon, JSON dữ liệu)
 │   ├── tailwind.config.ts           # Token màu sắc và kiểu chữ Light Theme
 │   └── types/                       # TypeScript Data Interfaces tường minh (Zero `any`)
