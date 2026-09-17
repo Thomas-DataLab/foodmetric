@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Tag,
-  Copy,
   Check,
   Swords,
   Play,
@@ -22,47 +21,48 @@ interface BentoGridProps {
   onSelectProduct?: (product: ProductItem) => void;
 }
 
-interface VoucherItem {
+interface DealItem {
   id: string;
-  code: string;
+  tag: string;
   title: string;
   condition: string;
-  expiry: string;
-  highlight: string;
+  status: string;
+  ctaText: string;
+  url: string;
 }
 
-const VOUCHERS: VoucherItem[] = [
+const DEALS: DealItem[] = [
   {
-    id: "v1",
-    code: "ANVAT25K",
-    title: "Giảm 25.000đ",
-    condition: "Áp dụng đơn từ 99k",
-    expiry: "HSD: Trong ngày",
-    highlight: "-25K",
-  },
-  {
-    id: "v2",
-    code: "FREESHIP",
+    id: "d1",
+    tag: "FREESHIP",
     title: "Miễn Phí Giao Hàng",
-    condition: "Đơn ăn vặt từ 45k",
-    expiry: "HSD: Toàn sàn",
-    highlight: "FREESHIP",
+    condition: "Áp dụng cho đơn ăn vặt từ 45k trên TikTok Shop",
+    status: "Đang Diễn Ra",
+    ctaText: "Nhận Trên TikTok",
+    url: "https://www.tiktok.com/@foodlenlut",
   },
   {
-    id: "v3",
-    code: "COMBO50K",
-    title: "Giảm 50.000đ",
-    condition: "Combo ăn vặt từ 199k",
-    expiry: "HSD: Số lượng có hạn",
-    highlight: "-50K",
+    id: "d2",
+    tag: "GIẢM 20%",
+    title: "Bánh Pía Lava Trứng Muối",
+    condition: "Deal 69.000đ (Giá gốc 85.000đ) — Top 1 Đơn",
+    status: "Đang Flash Sale",
+    ctaText: "Săn Deal 69k",
+    url: "https://www.tiktok.com/@meanvat99/video/7647956077656427797",
+  },
+  {
+    id: "d3",
+    tag: "COMBO HOT",
+    title: "Bánh Tráng Sốt Bơ Béo",
+    condition: "Deal 45.000đ kèm sốt bơ trứng muối & hành phi",
+    status: "Cháy Hàng",
+    ctaText: "Săn Deal 45k",
+    url: "https://www.tiktok.com/@ancungmaimai/video/7474235228450589960",
   },
 ];
 
 export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) => {
   const { top_gmv_product, fastest_growth_product } = kpis;
-
-  // Voucher Copy State
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   // Snack Battle Voting State
   const [votes, setVotes] = useState<{ left: number; right: number }>({
@@ -90,14 +90,6 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) =
       // Ignore localStorage read errors
     }
   }, []);
-
-  const handleCopyVoucher = (code: string) => {
-    if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(code);
-      setCopiedCode(code);
-      setTimeout(() => setCopiedCode(null), 2000);
-    }
-  };
 
   const handleVote = (side: "left" | "right") => {
     if (hasVoted === side) return;
@@ -134,7 +126,7 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) =
 
   return (
     <div className="w-full space-y-6">
-      {/* MODULE 1: VOUCHER HUB (Kho Mã Giảm Giá Hôm Nay) */}
+      {/* MODULE 1: DEALS & VOUCHERS (Săn Deal Thật TikTok Shop) */}
       <section className="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
@@ -143,71 +135,62 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) =
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
-                <span>🏷️ Mã Giảm Giá TikTok Shop Hôm Nay</span>
-                <span className="rounded-full bg-orange-100 text-orange-700 px-2 py-0.5 text-[10px] font-bold">
-                  Độc Quyền
+                <span>🏷️ Săn Deal & Voucher TikTok Shop Hôm Nay</span>
+                <span className="rounded-full bg-emerald-100 text-emerald-800 px-2 py-0.5 text-[10px] font-bold">
+                  Ưu Đãi Thật 100%
                 </span>
               </h2>
               <p className="text-xs text-slate-500">
-                Tiết kiệm tiền khi đặt đồ ăn vặt — Bấm 1 chạm sao chép và áp dụng ngay
+                Ưu đãi trực tiếp trên sàn TikTok Shop — Bấm để mở giỏ hàng hoặc nhận voucher trên app
               </p>
             </div>
           </div>
-          <span className="text-xs text-slate-500 font-medium">Làm mới lúc 00:00 hàng ngày</span>
+          <a
+            href="https://www.tiktok.com/@foodlenlut"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 border border-orange-200 px-3 py-1.5 rounded-full transition-all"
+          >
+            <span>Lưu Thêm Voucher Toàn Sàn</span>
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </a>
         </div>
 
         <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-          {VOUCHERS.map((voucher) => {
-            const isCopied = copiedCode === voucher.code;
-            return (
-              <div
-                key={voucher.id}
-                className="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-orange-50/40 via-white to-white p-4 transition-all hover:border-orange-300 hover:shadow-sm"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <span className="inline-block rounded-md bg-orange-600 px-2 py-0.5 text-[11px] font-bold text-white font-lexend">
-                      {voucher.highlight}
-                    </span>
-                    <h3 className="mt-2 text-base font-bold text-slate-900">
-                      {voucher.title}
-                    </h3>
-                    <p className="text-xs text-slate-600">{voucher.condition}</p>
-                  </div>
-                  <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-500 whitespace-nowrap">
-                    {voucher.expiry}
+          {DEALS.map((deal) => (
+            <div
+              key={deal.id}
+              className="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-orange-50/40 via-white to-white p-4 transition-all hover:border-orange-300 hover:shadow-sm"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <span className="inline-block rounded-md bg-orange-600 px-2 py-0.5 text-[11px] font-bold text-white font-lexend">
+                    {deal.tag}
                   </span>
+                  <h3 className="mt-2 text-base font-bold text-slate-900">
+                    {deal.title}
+                  </h3>
+                  <p className="text-xs text-slate-600 mt-1">{deal.condition}</p>
                 </div>
-
-                <div className="mt-4 pt-3 border-t border-dashed border-slate-200 flex items-center justify-between gap-2">
-                  <div className="font-mono text-xs font-bold text-orange-700 bg-orange-50 px-2 py-1 rounded-lg border border-orange-200">
-                    {voucher.code}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleCopyVoucher(voucher.code)}
-                    className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-all active:scale-95 ${
-                      isCopied
-                        ? "bg-emerald-600 text-white"
-                        : "bg-slate-900 text-white hover:bg-orange-600"
-                    }`}
-                  >
-                    {isCopied ? (
-                      <>
-                        <Check className="h-3.5 w-3.5 text-white" />
-                        <span>✓ Đã chép</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="h-3.5 w-3.5" />
-                        <span>Sao Chép Mã</span>
-                      </>
-                    )}
-                  </button>
-                </div>
+                <span className="rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 whitespace-nowrap">
+                  {deal.status}
+                </span>
               </div>
-            );
-          })}
+
+              <div className="mt-4 pt-3 border-t border-dashed border-slate-200 flex items-center justify-between gap-2">
+                <span className="text-[11px] text-slate-500 font-medium">Áp dụng trực tiếp</span>
+                <a
+                  href={deal.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 text-white hover:bg-orange-600 px-3 py-1.5 text-xs font-bold transition-all active:scale-95 shadow-xs"
+                >
+                  <span>{deal.ctaText}</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
