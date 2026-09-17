@@ -86,9 +86,15 @@ Lưu trữ số liệu biến động theo từng snapshot 24h:
 - **Typography & Font Strategy**:
   * Chữ hiển thị: **Inter** (tối ưu khả năng đọc văn bản trên màn hình nhỏ).
   * Số liệu tài chính: **Lexend** (thiết kế Tabular Numbers giúp các con số doanh thu, thứ hạng rank không bị nhảy giật khi sort/filter).
-- **Dual-Mode Video Modal**:
+- **Dual-Mode Video Modal (`VideoModal.tsx`)**:
   * Mode 1 (Mặc định): Native HTML5 Video Player phát video MP4 H.264 cục bộ (khắc phục lỗi bị TikTok chặn autoplay hoặc chặn cookie iframe trên desktop).
   * Mode 2 (Toggle): Iframe nhúng trực tiếp từ TikTok để người xem trải nghiệm đầy đủ giao diện gốc khi cần.
+  * Tích hợp nút lớn `🛒 Đặt Mua Ngay Trên TikTok Shop ↗` dẫn thẳng link affiliate giỏ hàng.
+- **Vòng Quay Tương Tác (`RandomSnackModal.tsx`)**:
+  * Hiệu ứng spinning roulette mượt mà trong 1.5s với thuật toán hãm tốc độ phân rã (Deceleration Animation) từ 80ms đến 250ms/step.
+  * Tích hợp 4 nút hành động: Mua ngay TikTok Shop, Xem video KOC in-app, Quay đổi món khác, và Sao chép lời nhắn rủ rê bạn bè vào clipboard.
+- **Direct Affiliate Conversion Buttons (`LeaderboardTable.tsx`)**:
+  * Nút `🛒 Mua Ngay` phủ đồng bộ cả trên phiên bản bảng Desktop và danh sách thẻ Mobile, đưa người dùng trực tiếp về giỏ hàng sản phẩm trên TikTok Shop.
 
 ---
 

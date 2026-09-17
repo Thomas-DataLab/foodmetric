@@ -134,3 +134,20 @@ Khi phát hiện một kênh KOC đồ ăn vặt mới đang viral hoặc một 
           print('Da dong tab TikTok:', t['id'])
   "
   ```
+
+### Sự cố 5: Kiểm tra tính toàn vẹn & độ khớp của hình ảnh sản phẩm (Image Quality Gate)
+- **Mục đích**: Bảo đảm 100% sản phẩm trên leaderboard đều có ảnh thật tồn tại trong `web/public/images/products/` và toán tài chính khớp `GMV = Units * Price`.
+- **Cách chạy kiểm tra tự động**:
+  ```bash
+  python -c "
+  import json
+  from pathlib import Path
+  with open('web/public/data/leaderboard_latest.json', 'r', encoding='utf-8') as f:
+      data = json.load(f)
+  for p in data['leaderboard']:
+      img = Path('web/public') / p['image_url'].lstrip('/')
+      assert img.exists(), f'MISSING: {img}'
+      assert p['estimated_daily_gmv'] == p['estimated_daily_units'] * p['current_price']
+  print('✓ 100% Data & Image Quality Gate PASSED!')
+  "
+  ```
