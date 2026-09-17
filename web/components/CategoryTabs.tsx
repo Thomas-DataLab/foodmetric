@@ -11,11 +11,11 @@ interface CategoryTabsProps {
 
 export const CATEGORY_TABS: CategoryTabItem[] = [
   { id: "all", label: "Tất Cả" },
-  { id: "banh-trang", label: "Bánh Tráng & Muối" },
-  { id: "kho-cac-loai", label: "Khô Các Loại" },
-  { id: "com-chay", label: "Cơm Cháy & Snack" },
+  { id: "under-50k", label: "Hạt Dẻ Dưới 50k" },
+  { id: "banh-trang", label: "Bánh Tráng & Sốt Bơ" },
+  { id: "kho-cac-loai", label: "Đồ Khô & Cay" },
+  { id: "do-uong", label: "Trà & Đá Me Giải Nhiệt" },
   { id: "an-vat-khac", label: "Bánh Kẹo Đặc Sản" },
-  { id: "do-uong", label: "Trà & Đồ Uống" },
 ];
 
 export const CategoryTabs: React.FC<CategoryTabsProps> = ({
@@ -35,19 +35,19 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
               key={tab.id}
               type="button"
               onClick={() => onSelectCategory(tab.id)}
-              className={`group flex min-h-[42px] shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all select-none ${
+              className={`group flex min-h-[42px] shrink-0 items-center gap-2 rounded-2xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all select-none ${
                 isActive
-                  ? "bg-slate-900 text-white shadow-md shadow-slate-900/10 font-bold"
-                  : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 shadow-xs"
+                  ? "bg-orange-600 text-white shadow-xs font-bold"
+                  : "border border-slate-200 bg-white text-slate-700 hover:border-orange-200 hover:bg-orange-50/50 hover:text-orange-700 shadow-xs"
               }`}
             >
               <span>{tab.label}</span>
               {typeof count === "number" && (
                 <span
-                  className={`rounded-md px-1.5 py-0.5 text-[11px] font-lexend font-bold transition-colors ${
+                  className={`rounded-lg px-2 py-0.5 text-[11px] font-lexend font-bold transition-colors ${
                     isActive
                       ? "bg-white/20 text-white"
-                      : "bg-slate-100 text-slate-500 group-hover:text-slate-700"
+                      : "bg-slate-100 text-slate-500 group-hover:bg-orange-100 group-hover:text-orange-800"
                   }`}
                 >
                   {count}

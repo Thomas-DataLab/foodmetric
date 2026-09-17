@@ -64,7 +64,14 @@ export interface DashboardData {
   leaderboard: ProductItem[];
 }
 
-export type CategoryFilterId = "all" | "banh-trang" | "kho-cac-loai" | "com-chay" | "an-vat-khac" | "do-uong";
+export type CategoryFilterId =
+  | "all"
+  | "under-50k"
+  | "banh-trang"
+  | "kho-cac-loai"
+  | "do-uong"
+  | "an-vat-khac"
+  | "com-chay";
 
 export interface CategoryTabItem {
   id: CategoryFilterId;

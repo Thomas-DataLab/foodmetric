@@ -1,375 +1,589 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  TrendingUp,
-  DollarSign,
-  Flame,
-  Music2,
-  Sparkles,
-  ShieldCheck,
-  Store,
-  Layers,
-  Check,
+  Tag,
   Copy,
-  ArrowUpRight,
+  Check,
+  Swords,
   Play,
+  ArrowUpRight,
+  Share2,
+  ThumbsUp,
+  Store,
+  Flame,
+  Zap,
 } from "lucide-react";
 import { BentoKPIs, ProductItem } from "@/types";
-import { formatVND, formatCompactVND, formatNumber } from "@/lib/utils";
+import { formatVND, formatNumber } from "@/lib/utils";
 
 interface BentoGridProps {
   kpis: BentoKPIs;
   onSelectProduct?: (product: ProductItem) => void;
 }
 
-export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) => {
-  const { top_gmv_product, fastest_growth_product, top_category, top_viral_hook } = kpis;
-  const [copied, setCopied] = useState<boolean>(false);
+interface VoucherItem {
+  id: string;
+  code: string;
+  title: string;
+  condition: string;
+  expiry: string;
+  highlight: string;
+}
 
-  const handleCopyHook = () => {
-    if (top_viral_hook?.hook_text) {
-      navigator.clipboard.writeText(top_viral_hook.hook_text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+const VOUCHERS: VoucherItem[] = [
+  {
+    id: "v1",
+    code: "ANVAT25K",
+    title: "Giảm 25.000đ",
+    condition: "Áp dụng đơn từ 99k",
+    expiry: "HSD: Trong ngày",
+    highlight: "-25K",
+  },
+  {
+    id: "v2",
+    code: "FREESHIP",
+    title: "Miễn Phí Giao Hàng",
+    condition: "Đơn ăn vặt từ 45k",
+    expiry: "HSD: Toàn sàn",
+    highlight: "FREESHIP",
+  },
+  {
+    id: "v3",
+    code: "COMBO50K",
+    title: "Giảm 50.000đ",
+    condition: "Combo ăn vặt từ 199k",
+    expiry: "HSD: Số lượng có hạn",
+    highlight: "-50K",
+  },
+];
+
+export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) => {
+  const { top_gmv_product, fastest_growth_product } = kpis;
+
+  // Voucher Copy State
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+
+  // Snack Battle Voting State
+  const [votes, setVotes] = useState<{ left: number; right: number }>({
+    left: 1420,
+    right: 1580,
+  });
+  const [hasVoted, setHasVoted] = useState<"left" | "right" | null>(null);
+  const [shareCopied, setShareCopied] = useState<boolean>(false);
+
+  useEffect(() => {
+    try {
+      const savedVote = localStorage.getItem("foodmetric_snack_battle_voted");
+      if (savedVote === "left" || savedVote === "right") {
+        setHasVoted(savedVote);
+      }
+      const savedLeft = localStorage.getItem("foodmetric_votes_left");
+      const savedRight = localStorage.getItem("foodmetric_votes_right");
+      if (savedLeft && savedRight) {
+        setVotes({
+          left: parseInt(savedLeft, 10) || 1420,
+          right: parseInt(savedRight, 10) || 1580,
+        });
+      }
+    } catch {
+      // Ignore localStorage read errors
+    }
+  }, []);
+
+  const handleCopyVoucher = (code: string) => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(code);
+      setCopiedCode(code);
+      setTimeout(() => setCopiedCode(null), 2000);
     }
   };
 
+  const handleVote = (side: "left" | "right") => {
+    if (hasVoted === side) return;
+
+    setVotes((prev) => {
+      const updated = {
+        left: side === "left" ? (hasVoted === "right" ? prev.left + 1 : prev.left + 1) : (hasVoted === "left" ? prev.left - 1 : prev.left),
+        right: side === "right" ? (hasVoted === "left" ? prev.right + 1 : prev.right + 1) : (hasVoted === "right" ? prev.right - 1 : prev.right),
+      };
+      try {
+        localStorage.setItem("foodmetric_snack_battle_voted", side);
+        localStorage.setItem("foodmetric_votes_left", updated.left.toString());
+        localStorage.setItem("foodmetric_votes_right", updated.right.toString());
+      } catch {
+        // Ignore
+      }
+      return updated;
+    });
+    setHasVoted(side);
+  };
+
+  const handleShareBattle = () => {
+    const text = "⚔️ Đấu trường ăn vặt TikTok Shop: Bánh Tráng Sốt Bơ 🆚 Bánh Pía Lava Mochi! Vào bình chọn món đỉnh hơn cùng mình nhé: " + (typeof window !== "undefined" ? window.location.href : "https://foodmetric.vercel.app");
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 2500);
+    }
+  };
+
+  const totalVotes = votes.left + votes.right;
+  const leftPercent = Math.round((votes.left / (totalVotes || 1)) * 100);
+  const rightPercent = 100 - leftPercent;
+
   return (
-    <section className="w-full space-y-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700">
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>Radar Thị Trường 24 Giờ</span>
+    <div className="w-full space-y-6">
+      {/* MODULE 1: VOUCHER HUB (Kho Mã Giảm Giá Hôm Nay) */}
+      <section className="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-4 border-b border-slate-100">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-50 border border-orange-200 text-orange-600">
+              <Tag className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+                <span>🏷️ Mã Giảm Giá TikTok Shop Hôm Nay</span>
+                <span className="rounded-full bg-orange-100 text-orange-700 px-2 py-0.5 text-[10px] font-bold">
+                  Độc Quyền
+                </span>
+              </h2>
+              <p className="text-xs text-slate-500">
+                Tiết kiệm tiền khi đặt đồ ăn vặt — Bấm 1 chạm sao chép và áp dụng ngay
+              </p>
+            </div>
           </div>
-          <h2 className="mt-1 text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900">
-            Điểm Nóng Doanh Thu & Xu Hướng Ăn Vặt
-          </h2>
+          <span className="text-xs text-slate-500 font-medium">Làm mới lúc 00:00 hàng ngày</span>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {/* CARD 1: TOP GMV SNACK (Hero Card — Spans 2 Cols) */}
-        {top_gmv_product && (
-          <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-emerald-300 lg:col-span-2">
-            <div className="flex flex-col justify-between h-full gap-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700">
-                    <DollarSign className="h-5 w-5" />
-                  </div>
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+          {VOUCHERS.map((voucher) => {
+            const isCopied = copiedCode === voucher.code;
+            return (
+              <div
+                key={voucher.id}
+                className="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-orange-50/40 via-white to-white p-4 transition-all hover:border-orange-300 hover:shadow-sm"
+              >
+                <div className="flex items-start justify-between gap-2">
                   <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
-                      Quán Quân Doanh Số Hôm Nay
+                    <span className="inline-block rounded-md bg-orange-600 px-2 py-0.5 text-[11px] font-bold text-white font-lexend">
+                      {voucher.highlight}
                     </span>
-                    <p className="text-xs text-slate-500">Top 1 GMV toàn ngành ăn vặt TikTok Shop</p>
-                  </div>
-                </div>
-
-                <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-xs font-bold text-emerald-700">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600"></span>
-                  </span>
-                  #1 LEADER
-                </div>
-              </div>
-
-              {/* Product Content Split */}
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center">
-                <div className="sm:col-span-7 space-y-3">
-                  <div className="text-3xl sm:text-5xl font-extrabold font-lexend tracking-tight text-slate-900">
-                    {formatVND(top_gmv_product.estimated_daily_gmv)}
-                  </div>
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600">
-                    <span className="inline-flex items-center gap-1 rounded-lg bg-slate-50 px-2.5 py-1 border border-slate-200 font-medium">
-                      Ước tính: <strong className="text-slate-900 font-lexend font-bold">+{formatNumber(top_gmv_product.estimated_daily_units)}</strong> đơn/24h
-                    </span>
-                    <span className="inline-flex items-center gap-1 rounded-lg bg-slate-50 px-2.5 py-1 border border-slate-200 font-medium">
-                      Giá: <strong className="text-slate-900 font-lexend font-bold">{formatVND(top_gmv_product.current_price)}</strong>
-                    </span>
-                  </div>
-
-                  <div className="pt-2">
-                    <h3 className="text-base sm:text-lg font-bold text-slate-900 line-clamp-2 leading-snug">
-                      {top_gmv_product.product_name}
+                    <h3 className="mt-2 text-base font-bold text-slate-900">
+                      {voucher.title}
                     </h3>
-                    <div className="mt-1.5 flex items-center gap-2 text-xs text-slate-500">
-                      <Store className="h-3.5 w-3.5 text-emerald-600" />
-                      <span className="font-medium text-slate-700">{top_gmv_product.shop_name}</span>
-                      {top_gmv_product.is_shop_official && (
-                        <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 border border-emerald-200">
-                          <ShieldCheck className="h-3 w-3" /> Mall
-                        </span>
-                      )}
-                    </div>
+                    <p className="text-xs text-slate-600">{voucher.condition}</p>
                   </div>
+                  <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-500 whitespace-nowrap">
+                    {voucher.expiry}
+                  </span>
                 </div>
 
-                {/* Hero Product Image */}
-                <div className="sm:col-span-5 relative">
-                  <div
-                    onClick={() => onSelectProduct?.(top_gmv_product)}
-                    title="Bấm vào ảnh để xem video KOC"
-                    className="group/heroimg relative aspect-square w-full max-w-[200px] sm:max-w-none mx-auto overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-md group-hover:scale-[1.02] transition-transform duration-500 cursor-pointer"
-                  >
-                    <img
-                      src={top_gmv_product.image_url}
-                      alt={top_gmv_product.product_name}
-                      className="h-full w-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover/heroimg:opacity-100 transition-opacity flex items-center justify-center">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-600 text-white shadow-xl">
-                        <Play className="h-6 w-6 fill-white ml-0.5" />
-                      </div>
-                    </div>
-                    <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-[11px] font-semibold">
-                      <span className="rounded-md bg-white/90 text-slate-800 px-2 py-0.5 shadow-sm font-lexend">⭐ {top_gmv_product.product_rating}</span>
-                      <span className="rounded-md bg-emerald-600 text-white px-2 py-0.5 font-bold shadow-sm">Hot Deal</span>
-                    </div>
+                <div className="mt-4 pt-3 border-t border-dashed border-slate-200 flex items-center justify-between gap-2">
+                  <div className="font-mono text-xs font-bold text-orange-700 bg-orange-50 px-2 py-1 rounded-lg border border-orange-200">
+                    {voucher.code}
                   </div>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-3 border-t border-slate-100 gap-3">
-                <span className="text-xs text-slate-400">Snapshot delta 24h</span>
-                <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => onSelectProduct?.(top_gmv_product)}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-purple-600/20 transition-all hover:bg-purple-700 active:scale-95"
+                    onClick={() => handleCopyVoucher(voucher.code)}
+                    className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-all active:scale-95 ${
+                      isCopied
+                        ? "bg-emerald-600 text-white"
+                        : "bg-slate-900 text-white hover:bg-orange-600"
+                    }`}
                   >
-                    <Play className="h-3.5 w-3.5 fill-white" />
-                    <span>Xem Video KOC</span>
+                    {isCopied ? (
+                      <>
+                        <Check className="h-3.5 w-3.5 text-white" />
+                        <span>✓ Đã chép</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-3.5 w-3.5" />
+                        <span>Sao Chép Mã</span>
+                      </>
+                    )}
                   </button>
-                  <a
-                    href={top_gmv_product.video_url || top_gmv_product.affiliate_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-emerald-600/20 transition-all hover:bg-emerald-500 active:scale-95"
-                  >
-                    <span>Mở TikTok</span>
-                    <ArrowUpRight className="h-3.5 w-3.5" />
-                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* MODULE 2: SNACK BATTLE (Đấu Trường Ăn Vặt) */}
+      <section className="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-4 border-b border-slate-100">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-50 border border-orange-200 text-orange-600">
+              <Swords className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                ⚔️ Đấu Trường Ăn Vặt: Món Nào Đỉnh Hơn?
+              </h2>
+              <p className="text-xs text-slate-500">
+                Bình chọn món ăn vặt chân ái của bạn hôm nay — Bánh tráng bơ hay Bánh pía lava?
+              </p>
+            </div>
+          </div>
+          <div className="text-xs text-slate-500 font-lexend">
+            Tổng lượt bình chọn: <strong className="text-slate-900">{formatNumber(totalVotes)}</strong>
+          </div>
+        </div>
+
+        {/* Battle Duel View */}
+        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          {/* Fighter 1: Bánh Tráng Cuốn Sốt Bơ */}
+          <div
+            className={`relative rounded-2xl border p-4 sm:p-5 transition-all flex flex-col justify-between ${
+              hasVoted === "left"
+                ? "border-orange-500 bg-orange-50/40 ring-2 ring-orange-500/20"
+                : "border-slate-200 bg-white hover:border-orange-200"
+            }`}
+          >
+            <div className="flex items-center gap-4">
+              <div
+                onClick={() => fastest_growth_product && onSelectProduct?.(fastest_growth_product)}
+                title="Bấm để xem video review"
+                className="group/img relative h-20 w-20 sm:h-24 sm:w-24 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 cursor-pointer shadow-xs"
+              >
+                <img
+                  src="/images/products/tt_7474235228450589960.jpg"
+                  alt="Bánh Tráng Cuốn Sốt Bơ"
+                  className="h-full w-full object-cover transition-transform group-hover/img:scale-105"
+                />
+                <div className="absolute inset-0 bg-slate-950/25 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-600 text-white shadow-md">
+                    <Play className="h-4 w-4 fill-white ml-0.5" />
+                  </div>
+                </div>
+              </div>
+              <div className="min-w-0 flex-1">
+                <span className="rounded-md bg-orange-100 px-2 py-0.5 text-[10px] font-bold text-orange-800">
+                  Đội Bánh Tráng
+                </span>
+                <h3 className="mt-1 font-bold text-slate-900 text-sm sm:text-base line-clamp-2">
+                  Bánh Tráng Cuốn Sốt Bơ
+                </h3>
+                <div className="mt-1 flex items-center gap-2">
+                  <span className="font-lexend font-bold text-orange-600 text-sm sm:text-base">
+                    45.000đ
+                  </span>
+                  <span className="text-[11px] text-slate-400">Đậm vị Tây Ninh</span>
                 </div>
               </div>
             </div>
-          </div>
-        )}
 
-        {/* CARD 2: FASTEST GROWING SNACK */}
-        {fastest_growth_product && (
-          <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-amber-300 flex flex-col justify-between">
+            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
+              <div className="text-left">
+                <span className="text-xl sm:text-2xl font-black font-lexend text-orange-600">
+                  {leftPercent}%
+                </span>
+                <span className="ml-1.5 text-xs text-slate-400 font-lexend">
+                  ({formatNumber(votes.left)} vote)
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleVote("left")}
+                className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all active:scale-95 ${
+                  hasVoted === "left"
+                    ? "bg-orange-600 text-white shadow-xs"
+                    : "bg-slate-100 text-slate-700 hover:bg-orange-50 hover:text-orange-700 border border-slate-200"
+                }`}
+              >
+                <ThumbsUp className="h-3.5 w-3.5" />
+                <span>{hasVoted === "left" ? "Đã Vote Bánh Tráng" : "Bình Chọn Món Này"}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Fighter 2: Bánh Pía Lava Mochi */}
+          <div
+            className={`relative rounded-2xl border p-4 sm:p-5 transition-all flex flex-col justify-between ${
+              hasVoted === "right"
+                ? "border-orange-500 bg-orange-50/40 ring-2 ring-orange-500/20"
+                : "border-slate-200 bg-white hover:border-orange-200"
+            }`}
+          >
+            <div className="flex items-center gap-4">
+              <div
+                onClick={() => top_gmv_product && onSelectProduct?.(top_gmv_product)}
+                title="Bấm để xem video review"
+                className="group/img relative h-20 w-20 sm:h-24 sm:w-24 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 cursor-pointer shadow-xs"
+              >
+                <img
+                  src="/images/products/tt_bk_01.jpg"
+                  alt="Bánh Pía Lava Mochi"
+                  className="h-full w-full object-cover transition-transform group-hover/img:scale-105"
+                />
+                <div className="absolute inset-0 bg-slate-950/25 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-600 text-white shadow-md">
+                    <Play className="h-4 w-4 fill-white ml-0.5" />
+                  </div>
+                </div>
+              </div>
+              <div className="min-w-0 flex-1">
+                <span className="rounded-md bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">
+                  Đội Bánh Pía
+                </span>
+                <h3 className="mt-1 font-bold text-slate-900 text-sm sm:text-base line-clamp-2">
+                  Bánh Pía Lava Mochi Trứng Muối
+                </h3>
+                <div className="mt-1 flex items-center gap-2">
+                  <span className="font-lexend font-bold text-orange-600 text-sm sm:text-base">
+                    69.000đ
+                  </span>
+                  <span className="text-[11px] text-slate-400">Béo ngậy tan chảy</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
+              <div className="text-left">
+                <span className="text-xl sm:text-2xl font-black font-lexend text-amber-600">
+                  {rightPercent}%
+                </span>
+                <span className="ml-1.5 text-xs text-slate-400 font-lexend">
+                  ({formatNumber(votes.right)} vote)
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleVote("right")}
+                className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all active:scale-95 ${
+                  hasVoted === "right"
+                    ? "bg-amber-600 text-white shadow-xs"
+                    : "bg-slate-100 text-slate-700 hover:bg-amber-50 hover:text-amber-700 border border-slate-200"
+                }`}
+              >
+                <ThumbsUp className="h-3.5 w-3.5" />
+                <span>{hasVoted === "right" ? "Đã Vote Bánh Pía" : "Bình Chọn Món Này"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Duel Proportion Visual Bar */}
+        <div className="mt-5 space-y-2">
+          <div className="flex justify-between text-xs font-semibold text-slate-600">
+            <span>Bánh Tráng Cuốn Bơ ({leftPercent}%)</span>
+            <span>Bánh Pía Lava ({rightPercent}%)</span>
+          </div>
+          <div className="h-2.5 w-full overflow-hidden rounded-full bg-slate-100 flex">
+            <div
+              className="h-full bg-orange-500 transition-all duration-500"
+              style={{ width: `${leftPercent}%` }}
+            />
+            <div
+              className="h-full bg-amber-500 transition-all duration-500"
+              style={{ width: `${rightPercent}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Share CTA to invite friends */}
+        <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-slate-500 text-center sm:text-left">
+            Bạn muốn món yêu thích giành chiến thắng? Hãy rủ bạn bè vào bình chọn ngay!
+          </p>
+          <button
+            type="button"
+            onClick={handleShareBattle}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-orange-200 bg-orange-50 px-3.5 py-1.5 text-xs font-bold text-orange-800 hover:bg-orange-100 active:scale-95 transition-all whitespace-nowrap"
+          >
+            {shareCopied ? (
+              <>
+                <Check className="h-3.5 w-3.5 text-emerald-600" />
+                <span>✓ Đã sao chép link kêu gọi!</span>
+              </>
+            ) : (
+              <>
+                <Share2 className="h-3.5 w-3.5 text-orange-600" />
+                <span>Kêu gọi bạn bè vào bình chọn 📲</span>
+              </>
+            )}
+          </button>
+        </div>
+      </section>
+
+      {/* MODULE 3: 2 CARD TIÊU BIỂU (Thẻ Quán Quân & Thẻ Tăng Tốc) */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* CARD QUÁN QUÂN: BÁNH PÍA LAVA */}
+        {top_gmv_product && (
+          <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 border border-amber-200 text-amber-700">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-50 border border-orange-200 text-orange-600">
                     <Flame className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
-                      Tăng Tốc Bùng Nổ
+                    <span className="text-xs font-bold uppercase tracking-wider text-orange-700">
+                      🔥 Món Ăn Vặt Quốc Dân Nổ Đơn Nhất
                     </span>
-                    <p className="text-[11px] text-slate-400">Velocity tăng trưởng cao nhất</p>
+                    <p className="text-[11px] text-slate-400">Top 1 đơn hàng toàn sàn</p>
                   </div>
                 </div>
-                <span className="inline-flex items-center rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-1 text-xs font-bold font-lexend text-emerald-700">
-                  +28.0% / Tuần
+                <span className="rounded-full bg-orange-50 border border-orange-200 px-2.5 py-0.5 text-xs font-lexend font-bold text-orange-700">
+                  #1 Hot Deal
                 </span>
               </div>
 
               <div className="flex items-center gap-4">
                 <div
-                  onClick={() => onSelectProduct?.(fastest_growth_product)}
-                  title="Bấm vào ảnh để xem video KOC"
-                  className="group/velimg relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 cursor-pointer hover:border-purple-400 transition-all"
+                  onClick={() => onSelectProduct?.(top_gmv_product)}
+                  title="Bấm vào ảnh để xem video HD"
+                  className="group/img relative h-20 w-20 sm:h-24 sm:w-24 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 cursor-pointer hover:border-orange-400 transition-all shadow-xs"
                 >
                   <img
-                    src={fastest_growth_product.image_url}
-                    alt={fastest_growth_product.product_name}
-                    className="h-full w-full object-cover group-hover:scale-105 transition-transform"
+                    src={top_gmv_product.image_url}
+                    alt={top_gmv_product.product_name}
+                    className="h-full w-full object-cover group-hover/img:scale-105 transition-transform"
                   />
-                  <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover/velimg:opacity-100 transition-opacity flex items-center justify-center">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-600 text-white shadow-lg">
+                  <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-600 text-white shadow-md">
                       <Play className="h-4 w-4 fill-white ml-0.5" />
                     </div>
                   </div>
                 </div>
-                <div>
-                  <div className="text-2xl font-extrabold font-lexend text-slate-900">
-                    +{formatNumber(fastest_growth_product.estimated_daily_units)}
+                <div className="min-w-0 flex-1">
+                  <h3
+                    onClick={() => onSelectProduct?.(top_gmv_product)}
+                    className="font-bold text-sm sm:text-base text-slate-900 hover:text-orange-600 line-clamp-2 cursor-pointer transition-colors"
+                  >
+                    {top_gmv_product.product_name}
+                  </h3>
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+                    <span className="font-lexend font-extrabold text-orange-600 text-base">
+                      {formatVND(top_gmv_product.current_price)}
+                    </span>
+                    <span className="text-slate-500">•</span>
+                    <span className="font-lexend font-bold text-emerald-700">
+                      +{formatNumber(top_gmv_product.estimated_daily_units)} đơn/ngày
+                    </span>
                   </div>
-                  <div className="text-xs text-slate-500">
-                    đơn mới trong 24h qua
-                  </div>
-                  <div className="mt-1 text-xs font-bold font-lexend text-emerald-700">
-                    ≈ {formatCompactVND(fastest_growth_product.estimated_daily_gmv)} GMV
+                  <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+                    <Store className="h-3 w-3 text-orange-600" />
+                    <span className="truncate">{top_gmv_product.shop_name}</span>
                   </div>
                 </div>
               </div>
-
-              <div className="rounded-xl bg-slate-50 border border-slate-200/80 p-3">
-                <p className="text-xs font-bold text-slate-900 line-clamp-2">
-                  {fastest_growth_product.product_name}
-                </p>
-                <p className="mt-1 text-[11px] text-slate-500">
-                  Gian hàng: <span className="text-slate-800 font-medium">{fastest_growth_product.shop_name}</span>
-                </p>
-              </div>
             </div>
 
-            <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-              <span className="text-xs text-slate-400">Tín hiệu viral mạnh</span>
-              <div className="flex items-center gap-3">
+            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+              <span className="text-xs text-slate-400">Đánh giá: ⭐ {top_gmv_product.product_rating}</span>
+              <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => onSelectProduct?.(fastest_growth_product)}
-                  className="text-xs font-bold text-purple-700 hover:text-purple-900 inline-flex items-center gap-1"
+                  onClick={() => onSelectProduct?.(top_gmv_product)}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-orange-50 border border-orange-200 px-3 py-1.5 text-xs font-bold text-orange-800 hover:bg-orange-100 active:scale-95 transition-all"
                 >
-                  <Play className="h-3 w-3 fill-purple-700" />
+                  <Play className="h-3 w-3 fill-orange-700" />
                   <span>Xem Video</span>
                 </button>
                 <a
-                  href={fastest_growth_product.video_url || fastest_growth_product.affiliate_url}
+                  href={top_gmv_product.affiliate_url || top_gmv_product.video_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-bold text-amber-700 hover:text-amber-800 inline-flex items-center gap-1"
+                  className="inline-flex items-center gap-1 rounded-xl bg-orange-600 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-orange-700 active:scale-95 transition-all shadow-xs"
                 >
-                  TikTok <ArrowUpRight className="h-3 w-3" />
+                  <span>Săn Deal TikTok</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
               </div>
             </div>
           </div>
         )}
 
-        {/* CARD 3: TOP SNACK CATEGORY */}
-        {top_category && (
-          <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-blue-300 flex flex-col justify-between">
+        {/* CARD TĂNG TỐC: BÁNH TRÁNG SỐT BƠ */}
+        {fastest_growth_product && (
+          <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 border border-blue-200 text-blue-700">
-                    <Layers className="h-5 w-5" />
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 border border-amber-200 text-amber-600">
+                    <Zap className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-blue-700">
-                      Ngành Hàng Dẫn Đầu
+                    <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
+                      ⚡ Món Mới Cháy Hàng Tuần Này
                     </span>
-                    <p className="text-[11px] text-slate-400">Chiếm thị phần áp đảo</p>
+                    <p className="text-[11px] text-slate-400">Đang được săn lùng rần rần</p>
                   </div>
                 </div>
-                <span className="text-xs font-bold font-lexend text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">
-                  Thị phần #1
+                <span className="rounded-full bg-amber-50 border border-amber-200 px-2.5 py-0.5 text-xs font-lexend font-bold text-amber-700">
+                  Trending
                 </span>
               </div>
 
-              <div>
-                <div className="text-2xl font-extrabold text-slate-900">
-                  {top_category.name}
-                </div>
-                <div className="mt-1 text-sm font-bold font-lexend text-emerald-700">
-                  {formatCompactVND(top_category.gmv)} GMV ước tính
-                </div>
-              </div>
-
-              {/* Category Market Share Breakdown Bars */}
-              <div className="space-y-2 pt-2">
-                <div className="space-y-1">
-                  <div className="flex justify-between text-[11px] text-slate-600">
-                    <span>Bánh Kẹo & Đặc Sản</span>
-                    <span className="font-lexend font-bold text-slate-900">35%</span>
-                  </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                    <div className="h-full rounded-full bg-blue-600" style={{ width: "35%" }}></div>
+              <div className="flex items-center gap-4">
+                <div
+                  onClick={() => onSelectProduct?.(fastest_growth_product)}
+                  title="Bấm vào ảnh để xem video HD"
+                  className="group/img relative h-20 w-20 sm:h-24 sm:w-24 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 cursor-pointer hover:border-amber-400 transition-all shadow-xs"
+                >
+                  <img
+                    src={fastest_growth_product.image_url}
+                    alt={fastest_growth_product.product_name}
+                    className="h-full w-full object-cover group-hover/img:scale-105 transition-transform"
+                  />
+                  <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-600 text-white shadow-md">
+                      <Play className="h-4 w-4 fill-white ml-0.5" />
+                    </div>
                   </div>
                 </div>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between text-[11px] text-slate-600">
-                    <span>Bánh Tráng & Muối</span>
-                    <span className="font-lexend font-bold text-slate-900">28%</span>
-                  </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                    <div className="h-full rounded-full bg-emerald-600" style={{ width: "28%" }}></div>
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between text-[11px] text-slate-600">
-                    <span>Khô & Thịt Sấy</span>
-                    <span className="font-lexend font-bold text-slate-900">22%</span>
-                  </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                    <div className="h-full rounded-full bg-amber-500" style={{ width: "22%" }}></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-3 border-t border-slate-100 text-xs text-slate-400">
-              Tổng hợp từ 500+ SKU
-            </div>
-          </div>
-        )}
-
-        {/* CARD 4: VIRAL AFFILIATE HOOK & SOUND */}
-        {top_viral_hook && (
-          <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-purple-300 lg:col-span-2">
-            <div className="relative z-10 flex flex-col justify-between h-full gap-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 border border-purple-200 text-purple-700">
-                    <Music2 className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-purple-700">
-                      Gợi Ý Kịch Bản & Âm Thanh Viral
-                    </span>
-                    <p className="text-[11px] text-slate-400">Dành cho KOC làm Affiliate F&B kéo đơn</p>
-                  </div>
-                </div>
-
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 border border-purple-200 px-3 py-1 text-xs font-bold text-purple-700 font-lexend">
-                  🔥 {top_viral_hook.views_benchmark}
-                </span>
-              </div>
-
-              {/* Hook Quote Box */}
-              <div className="rounded-2xl border border-purple-100 bg-purple-50/50 p-4">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-purple-700">
-                  Câu Mở Đầu (Hook 3s Đầu Video):
-                </span>
-                <p className="mt-1 text-sm sm:text-base font-semibold text-slate-900 italic">
-                  "{top_viral_hook.hook_text}"
-                </p>
-                <div className="mt-3 flex items-center justify-between pt-2 border-t border-purple-200/60">
-                  <span className="text-xs text-purple-800 flex items-center gap-1.5">
-                    <Music2 className="h-3.5 w-3.5 text-purple-600" />
-                    Âm thanh gợi ý: <strong className="text-slate-900 font-lexend font-bold">{top_viral_hook.recommended_sound}</strong>
-                  </span>
-
-                  <button
-                    type="button"
-                    onClick={handleCopyHook}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-purple-700 active:scale-95 transition-all"
+                <div className="min-w-0 flex-1">
+                  <h3
+                    onClick={() => onSelectProduct?.(fastest_growth_product)}
+                    className="font-bold text-sm sm:text-base text-slate-900 hover:text-orange-600 line-clamp-2 cursor-pointer transition-colors"
                   >
-                    {copied ? (
-                      <>
-                        <Check className="h-3.5 w-3.5 text-emerald-200" /> Đã Sao Chép!
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="h-3.5 w-3.5" /> Sao Chép Hook
-                      </>
-                    )}
-                  </button>
+                    {fastest_growth_product.product_name}
+                  </h3>
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+                    <span className="font-lexend font-extrabold text-orange-600 text-base">
+                      {formatVND(fastest_growth_product.current_price)}
+                    </span>
+                    <span className="text-slate-500">•</span>
+                    <span className="font-lexend font-bold text-emerald-700">
+                      +{formatNumber(fastest_growth_product.estimated_daily_units)} đơn/ngày
+                    </span>
+                  </div>
+                  <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+                    <Store className="h-3 w-3 text-orange-600" />
+                    <span className="truncate">{fastest_growth_product.shop_name}</span>
+                  </div>
                 </div>
+              </div>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+              <span className="text-xs text-slate-400">Đánh giá: ⭐ {fastest_growth_product.product_rating}</span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => onSelectProduct?.(fastest_growth_product)}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-amber-50 border border-amber-200 px-3 py-1.5 text-xs font-bold text-amber-800 hover:bg-amber-100 active:scale-95 transition-all"
+                >
+                  <Play className="h-3 w-3 fill-amber-700" />
+                  <span>Xem Video</span>
+                </button>
+                <a
+                  href={fastest_growth_product.affiliate_url || fastest_growth_product.video_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 rounded-xl bg-orange-600 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-orange-700 active:scale-95 transition-all shadow-xs"
+                >
+                  <span>Săn Deal TikTok</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
               </div>
             </div>
           </div>
         )}
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };

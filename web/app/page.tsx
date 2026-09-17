@@ -8,15 +8,8 @@ import { LeaderboardTable } from "@/components/LeaderboardTable";
 import { VideoModal } from "@/components/VideoModal";
 import { RandomSnackModal } from "@/components/RandomSnackModal";
 import { DashboardData, CategoryFilterId, ProductItem } from "@/types";
-import { formatCompactVND, formatNumber } from "@/lib/utils";
-import {
-  TrendingUp,
-  Package,
-  Sparkles,
-  Info,
-  Calendar,
-  Database,
-} from "lucide-react";
+import { formatNumber } from "@/lib/utils";
+import { Flame, Package, Tag, Share2, Check } from "lucide-react";
 import initialData from "@/public/data/leaderboard_latest.json";
 
 export default function HomePage() {
@@ -25,10 +18,16 @@ export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState<CategoryFilterId>("all");
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [isRandomModalOpen, setIsRandomModalOpen] = useState<boolean>(false);
+  const [shareCopied, setShareCopied] = useState<boolean>(false);
 
   const handleSelectProduct = (product: ProductItem | null) => {
     setIsRandomModalOpen(false);
     setSelectedProduct(product);
+  };
+
+  const handleOpenRandomSnack = () => {
+    setSelectedProduct(null);
+    setIsRandomModalOpen(true);
   };
 
   const fetchData = async () => {
@@ -41,7 +40,7 @@ export default function HomePage() {
         setData(json);
       }
     } catch {
-      // Graceful fallback to initialData
+      // Fallback to initialData
     }
   };
 
@@ -52,17 +51,21 @@ export default function HomePage() {
   const categoryCounts = useMemo<Record<CategoryFilterId, number>>(() => {
     const counts: Record<CategoryFilterId, number> = {
       all: 0,
+      "under-50k": 0,
       "banh-trang": 0,
       "kho-cac-loai": 0,
-      "com-chay": 0,
-      "an-vat-khac": 0,
       "do-uong": 0,
+      "an-vat-khac": 0,
+      "com-chay": 0,
     };
 
     if (!data?.leaderboard) return counts;
 
     counts.all = data.leaderboard.length;
     for (const item of data.leaderboard) {
+      if (item.current_price <= 50000) {
+        counts["under-50k"]++;
+      }
       if (item.category_slug in counts) {
         counts[item.category_slug as CategoryFilterId]++;
       }
@@ -74,7 +77,10 @@ export default function HomePage() {
     if (!data?.leaderboard) return [];
 
     return data.leaderboard.filter((item) => {
-      if (activeCategory !== "all" && item.category_slug !== activeCategory) {
+      // Category & Price vibe filtering
+      if (activeCategory === "under-50k") {
+        if (item.current_price > 50000) return false;
+      } else if (activeCategory !== "all" && item.category_slug !== activeCategory) {
         return false;
       }
 
@@ -99,102 +105,99 @@ export default function HomePage() {
     return map;
   }, [data]);
 
+  const under50kCount = useMemo(() => {
+    if (!data?.leaderboard) return 0;
+    return data.leaderboard.filter((p) => p.current_price <= 50000).length;
+  }, [data]);
+
+  const handleShareWeb = () => {
+    if (typeof window !== "undefined" && navigator?.clipboard) {
+      navigator.clipboard.writeText(window.location.href);
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 2500);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col selection:bg-emerald-100 selection:text-emerald-800 pb-16 sm:pb-0">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col selection:bg-orange-100 selection:text-orange-900 pb-16 sm:pb-0">
       <Navbar
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         lastUpdated={data?.metadata.last_updated}
         totalProducts={data?.metadata.total_products_indexed}
-        onOpenRandomSnack={() => setIsRandomModalOpen(true)}
+        onOpenRandomSnack={handleOpenRandomSnack}
       />
 
       <main className="mx-auto flex-1 w-full max-w-container px-4 py-6 sm:px-6 sm:py-8 space-y-6">
-        {/* Data Origin & Date Range Transparency Callout */}
-        <div className="rounded-2xl border border-blue-200/80 bg-blue-50/60 p-4 text-xs text-blue-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
-          <div className="flex items-start sm:items-center gap-2.5">
-            <Info className="h-4 w-4 text-blue-600 shrink-0 mt-0.5 sm:mt-0" />
-            <div>
-              <span className="font-bold">Nguồn dữ liệu & Chu kỳ đo lường:</span>{" "}
-              Bản ghi <strong>24h Snapshot (2026-09-16 → 2026-09-17)</strong> được chuẩn hóa từ 5 kênh Food Affiliate đối thủ đầu ngành.
-            </div>
-          </div>
-          <div className="flex items-center gap-3 shrink-0 text-[11px] text-blue-700">
-            <span className="flex items-center gap-1"><Database className="h-3.5 w-3.5" /> DuckDB OLAP</span>
-            <span>•</span>
-            <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" /> Date Range: 24h Delta</span>
-          </div>
-        </div>
-
-        {/* Hero Headline & Key Macro Metrics Banner */}
-        <section className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
+        {/* Hero Section */}
+        <section className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
           <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Radar Thị Trường Ăn Vặt TikTok Shop
-                </div>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold text-orange-700">
+                  <Flame className="h-3.5 w-3.5 text-orange-600" />
+                  Đồ Ăn Vặt Hot Trend TikTok Shop
+                </span>
                 <button
                   type="button"
-                  onClick={() => setIsRandomModalOpen(true)}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-gradient-to-r from-amber-50 to-orange-50 px-3 py-1 text-xs font-bold text-amber-800 shadow-xs hover:from-amber-100 hover:to-orange-100 transition-all active:scale-95 cursor-pointer"
+                  onClick={handleOpenRandomSnack}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50/80 px-3 py-1 text-xs font-bold text-orange-800 shadow-xs hover:bg-orange-100 transition-all active:scale-95 cursor-pointer"
                 >
                   🎲 Hôm Nay Ăn Gì? (Quay Ngẫu Nhiên)
                 </button>
               </div>
 
               <h1 className="mt-3 text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-                Theo Dõi Sản Phẩm & Doanh Thu Từng Ngày
+                Săn Lùng Món Ăn Vặt Đang Gây Bão TikTok Shop
               </h1>
               <p className="mt-2 max-w-2xl text-xs sm:text-sm text-slate-600">
-                Dữ liệu phân tích doanh số, tốc độ tăng trưởng và mẫu hook affiliate dành riêng cho nhà bán hàng và KOC ngành F&B.
+                Bóc tách những món ăn vặt nổ đơn rần rần, video triệu view và săn deal giá hời nhất hôm nay.
               </p>
             </div>
 
-            {/* Macro KPI Cards with Lexend font */}
+            {/* Friendly Macro Counters */}
             <div className="grid grid-cols-2 gap-3 sm:flex sm:items-center sm:gap-4">
               <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
                 <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-                  <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>Tổng GMV 24h</span>
+                  <Package className="h-3.5 w-3.5 text-orange-600" />
+                  <span>Đơn Chốt / Ngày</span>
                 </div>
                 <div className="mt-1 text-lg sm:text-2xl font-extrabold font-lexend text-emerald-700">
-                  {formatCompactVND(data.metadata.total_estimated_daily_gmv)}
+                  +{formatNumber(data.metadata.total_estimated_daily_units)}
                 </div>
                 <div className="text-[10px] text-slate-400">
-                  Toàn thị trường theo dõi
+                  Từ các món hot nhất
                 </div>
               </div>
 
               <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
                 <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-                  <Package className="h-3.5 w-3.5 text-amber-600" />
-                  <span>Đơn Hàng / 24h</span>
+                  <Tag className="h-3.5 w-3.5 text-orange-600" />
+                  <span>Món Dưới 50k</span>
                 </div>
                 <div className="mt-1 text-lg sm:text-2xl font-extrabold font-lexend text-slate-900">
-                  +{formatNumber(data.metadata.total_estimated_daily_units)}
+                  {under50kCount} Món
                 </div>
                 <div className="text-[10px] text-slate-400">
-                  Từ {data.metadata.total_products_indexed} món ăn theo dõi
+                  Giá hạt dẻ học sinh sinh viên
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Bento Grid (4-Card Summary) */}
+        {/* Traffic Area: Voucher Hub + Snack Battle + 2 Featured Cards */}
         <BentoGrid kpis={data.bento_kpis} onSelectProduct={handleSelectProduct} />
 
-        {/* Community & Channel Banner */}
-        <section className="rounded-2xl border border-rose-200/70 bg-gradient-to-r from-rose-50/80 via-white to-amber-50/80 p-4 sm:p-6 shadow-xs">
+        {/* Community & TikTok Creator Banner */}
+        <section className="rounded-3xl border border-orange-200 bg-gradient-to-r from-orange-50/60 via-white to-amber-50/60 p-5 sm:p-6 shadow-xs">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="space-y-1 max-w-2xl">
-              <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                🔥 Đồng Hành Cùng Kênh Food Lén Lút
+              <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+                <span>🔥 Đồng Hành Cùng Kênh Food Lén Lút</span>
               </h2>
               <p className="text-xs sm:text-sm text-slate-600">
-                Bạn mê đồ ăn vặt hoặc đang tìm nguồn hàng hot trend nổ đơn? Follow ngay kênh TikTok @foodlenlut để xem video review thực tế, săn voucher độc quyền 20k-50k và cập nhật món mới mỗi ngày!
+                Bạn mê đồ ăn vặt hoặc đang tìm các món hot trend nổ đơn? Follow ngay kênh TikTok @foodlenlut để xem video review thực tế, săn voucher độc quyền 20k-50k và cập nhật món mới mỗi ngày!
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2.5 shrink-0">
@@ -202,21 +205,26 @@ export default function HomePage() {
                 href="https://www.tiktok.com/@foodlenlut"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-rose-700 transition-all"
+                className="inline-flex items-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-xs hover:bg-orange-700 transition-all active:scale-95"
               >
-                ✨ Khám Phá Kênh @foodlenlut ↗
+                Khám Phá Kênh @foodlenlut ↗
               </a>
               <button
                 type="button"
-                onClick={() => {
-                  if (typeof window !== "undefined" && navigator?.clipboard) {
-                    navigator.clipboard.writeText(window.location.href);
-                    alert("Đã sao chép link FoodMetric để chia sẻ!");
-                  }
-                }}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-xs sm:text-sm font-bold text-slate-700 shadow-xs hover:bg-slate-50 transition-all"
+                onClick={handleShareWeb}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs sm:text-sm font-bold text-slate-700 shadow-xs hover:bg-slate-50 transition-all active:scale-95"
               >
-                🔗 Chia Sẻ Web Với Bạn Bè
+                {shareCopied ? (
+                  <>
+                    <Check className="h-4 w-4 text-emerald-600" />
+                    <span>✓ Đã sao chép link!</span>
+                  </>
+                ) : (
+                  <>
+                    <Share2 className="h-4 w-4 text-slate-500" />
+                    <span>Chia Sẻ Với Bạn Bè</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -257,13 +265,13 @@ export default function HomePage() {
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-2.5 flex items-center justify-between gap-2 shadow-lg sm:hidden">
         <button
           type="button"
-          onClick={() => setIsRandomModalOpen(true)}
-          className="shrink-0 inline-flex items-center gap-1 rounded-xl border border-amber-300 bg-gradient-to-r from-amber-50 to-orange-50 px-2.5 py-1.5 text-xs font-bold text-amber-800 shadow-xs active:scale-95"
+          onClick={handleOpenRandomSnack}
+          className="shrink-0 inline-flex items-center gap-1 rounded-xl border border-orange-200 bg-orange-50 px-2.5 py-1.5 text-xs font-bold text-orange-800 shadow-xs active:scale-95"
         >
           🎲 Ăn Gì?
         </button>
         <div className="flex items-center gap-2 min-w-0">
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-rose-100 text-sm">
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100 text-sm">
             🔥
           </span>
           <span className="text-xs text-slate-800 font-medium truncate">
@@ -274,7 +282,7 @@ export default function HomePage() {
           href="https://www.tiktok.com/@foodlenlut"
           target="_blank"
           rel="noopener noreferrer"
-          className="shrink-0 inline-flex items-center gap-1 rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-rose-700 transition-all"
+          className="shrink-0 inline-flex items-center gap-1 rounded-lg bg-orange-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-orange-700 transition-all"
         >
           Follow ↗
         </a>
@@ -283,12 +291,10 @@ export default function HomePage() {
       <footer className="mt-12 border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
         <div className="mx-auto max-w-container px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>
-            FoodMetric © 2026 — Nền tảng phân tích dữ liệu TikTok Shop F&B độc lập.
+            FoodMetric © 2026 — Chuyên trang gợi ý món ngon & săn deal đồ ăn vặt TikTok Shop.
           </p>
           <div className="flex items-center gap-4 text-[11px] text-slate-400">
-            <span>Font: Inter (Text) + Lexend (Numbers)</span>
-            <span>•</span>
-            <span>DuckDB + Next.js 14</span>
+            <span>Đồng hành cùng Kênh Food Lén Lút</span>
           </div>
         </div>
       </footer>
