@@ -109,12 +109,21 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) =
 
                 {/* Hero Product Image */}
                 <div className="sm:col-span-5 relative">
-                  <div className="relative aspect-square w-full max-w-[200px] sm:max-w-none mx-auto overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-md group-hover:scale-[1.02] transition-transform duration-500">
+                  <div
+                    onClick={() => onSelectProduct?.(top_gmv_product)}
+                    title="Bấm vào ảnh để xem video KOC"
+                    className="group/heroimg relative aspect-square w-full max-w-[200px] sm:max-w-none mx-auto overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-md group-hover:scale-[1.02] transition-transform duration-500 cursor-pointer"
+                  >
                     <img
                       src={top_gmv_product.image_url}
                       alt={top_gmv_product.product_name}
                       className="h-full w-full object-cover"
                     />
+                    <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover/heroimg:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-600 text-white shadow-xl">
+                        <Play className="h-6 w-6 fill-white ml-0.5" />
+                      </div>
+                    </div>
                     <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-[11px] font-semibold">
                       <span className="rounded-md bg-white/90 text-slate-800 px-2 py-0.5 shadow-sm font-lexend">⭐ {top_gmv_product.product_rating}</span>
                       <span className="rounded-md bg-emerald-600 text-white px-2 py-0.5 font-bold shadow-sm">Hot Deal</span>
@@ -171,12 +180,21 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ kpis, onSelectProduct }) =
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
+                <div
+                  onClick={() => onSelectProduct?.(fastest_growth_product)}
+                  title="Bấm vào ảnh để xem video KOC"
+                  className="group/velimg relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 cursor-pointer hover:border-purple-400 transition-all"
+                >
                   <img
                     src={fastest_growth_product.image_url}
                     alt={fastest_growth_product.product_name}
                     className="h-full w-full object-cover group-hover:scale-105 transition-transform"
                   />
+                  <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover/velimg:opacity-100 transition-opacity flex items-center justify-center">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-600 text-white shadow-lg">
+                      <Play className="h-4 w-4 fill-white ml-0.5" />
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <div className="text-2xl font-extrabold font-lexend text-slate-900">

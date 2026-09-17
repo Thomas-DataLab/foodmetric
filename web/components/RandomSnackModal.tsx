@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { X, Store, Eye, ShoppingBag, Sparkles } from "lucide-react";
+import { X, Store, Eye, ShoppingBag, Sparkles, Play } from "lucide-react";
 import { ProductItem } from "@/types";
 import { formatCompactNumber, formatVND } from "@/lib/utils";
 
@@ -185,17 +185,37 @@ export const RandomSnackModal: React.FC<RandomSnackModalProps> = ({
               )}
 
               <div className="flex flex-col sm:flex-row items-center gap-4">
-                {/* Product Thumbnail */}
-                <div className="relative h-28 w-28 sm:h-32 sm:w-32 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm">
+                {/* Product Thumbnail with Click to Play Video */}
+                <div
+                  onClick={() => {
+                    if (!isSpinning && currentProduct) {
+                      onSelectProduct(currentProduct);
+                      onClose();
+                    }
+                  }}
+                  title="Bấm vào ảnh để xem video KOC"
+                  className={`group/thumb relative h-28 w-28 sm:h-32 sm:w-32 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm ${
+                    !isSpinning ? "cursor-pointer hover:border-purple-400 hover:shadow-md transition-all" : ""
+                  }`}
+                >
                   {currentProduct.image_url ? (
                     <img
                       src={currentProduct.image_url}
                       alt={currentProduct.product_name}
-                      className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover/thumb:scale-105"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center text-slate-400">
                       <ShoppingBag className="h-10 w-10 text-emerald-600" />
+                    </div>
+                  )}
+                  {/* Play icon overlay on hover */}
+                  {!isSpinning && (
+                    <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[1px] opacity-0 group-hover/thumb:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 text-white">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-600 text-white shadow-lg">
+                        <Play className="h-5 w-5 fill-white ml-0.5" />
+                      </div>
+                      <span className="text-[10px] font-bold">Xem video</span>
                     </div>
                   )}
                 </div>
