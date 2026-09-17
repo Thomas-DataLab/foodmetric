@@ -86,6 +86,10 @@ Lưu trữ số liệu biến động theo từng snapshot 24h:
 - **Typography & Font Strategy**:
   * Chữ hiển thị: **Inter** (tối ưu khả năng đọc văn bản trên màn hình nhỏ).
   * Số liệu tài chính: **Lexend** (thiết kế Tabular Numbers giúp các con số doanh thu, thứ hạng rank không bị nhảy giật khi sort/filter).
+- **Tối Ưu Hóa Mobile & SEO Toàn Diện**:
+  * **SEO Google Rich Snippets (`web/app/layout.tsx`)**: Nhúng dữ liệu có cấu trúc Schema.org JSON-LD (`WebSite`, `Organization`, `ItemList`) khai báo 17 món ăn vặt kèm giá bán và đánh giá sao, giúp Google bot lập chỉ mục nhanh chóng và hiển thị rich snippets nổi bật trên Google Search.
+  * **PWA Web App Manifest (`web/app/manifest.ts`)**: Cung cấp cấu hình manifest chuẩn Next.js 14 App Router, hỗ trợ tính năng "Thêm vào màn hình chính" (Add to Home Screen) trên Safari (iOS) và Chrome (Android), biến web thành ứng dụng độc lập với logo Capybara chính thức (chi phí 0đ).
+  * **Thanh Điều Hướng Đáy Màn Hình Di Động (`web/components/StickyMobileBar.tsx`)**: Thanh công cụ cố định ở mép dưới (< 768px) hiệu ứng kính mờ `backdrop-blur-md bg-white/95` chứa 3 nút 1-chạm: Vòng quay ăn xế, Cuộn nhanh đến Đấu trường vote, và Bật thẳng App TikTok qua Smart Launcher.
 - **Smart TikTok App Launcher & Deep-Linking (`web/lib/tiktokLauncher.ts`)**:
   * Triệt tiêu bẫy in-app webview trên điện thoại (khi khách vào web từ Facebook, Zalo, Telegram hay Link Bio TikTok `@foodlenlut`).
   * Tự động phát hiện môi trường:
