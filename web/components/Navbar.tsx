@@ -8,6 +8,7 @@ interface NavbarProps {
   onSearchChange: (value: string) => void;
   lastUpdated?: string;
   totalProducts?: number;
+  onOpenRandomSnack?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -15,6 +16,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSearchChange,
   lastUpdated,
   totalProducts,
+  onOpenRandomSnack,
 }) => {
   const [localSearch, setLocalSearch] = useState<string>(searchQuery);
 
@@ -79,6 +81,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               </p>
             </div>
           </div>
+
+          {/* Mobile Random Snack Button */}
+          <div className="sm:hidden">
+            <button
+              type="button"
+              onClick={onOpenRandomSnack}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-amber-300 bg-gradient-to-r from-amber-50 to-orange-50 px-2.5 py-1.5 text-xs font-bold text-amber-800 shadow-xs hover:from-amber-100 hover:to-orange-100 transition-all active:scale-95 whitespace-nowrap"
+            >
+              🎲 Hôm Nay Ăn Gì?
+            </button>
+          </div>
         </div>
 
         {/* Center Search Input */}
@@ -107,8 +120,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
         </div>
 
-        {/* Right Status Badge & TikTok CTA */}
-        <div className="flex items-center gap-3 justify-between sm:justify-end">
+        {/* Right Status Badge, Random Snack CTA & TikTok CTA */}
+        <div className="flex items-center gap-2 sm:gap-3 justify-between sm:justify-end">
+          <button
+            type="button"
+            onClick={onOpenRandomSnack}
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-amber-300 bg-gradient-to-r from-amber-50 to-orange-50 px-3 py-2 text-xs font-bold text-amber-800 shadow-xs hover:from-amber-100 hover:to-orange-100 transition-all active:scale-95 whitespace-nowrap"
+          >
+            🎲 Hôm Nay Ăn Gì?
+          </button>
+
           <a
             href="https://www.tiktok.com/@foodlenlut"
             target="_blank"

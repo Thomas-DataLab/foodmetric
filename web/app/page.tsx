@@ -6,6 +6,7 @@ import { BentoGrid } from "@/components/BentoGrid";
 import { CategoryTabs } from "@/components/CategoryTabs";
 import { LeaderboardTable } from "@/components/LeaderboardTable";
 import { VideoModal } from "@/components/VideoModal";
+import { RandomSnackModal } from "@/components/RandomSnackModal";
 import { DashboardData, CategoryFilterId, ProductItem } from "@/types";
 import { formatCompactVND, formatNumber } from "@/lib/utils";
 import {
@@ -23,6 +24,7 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeCategory, setActiveCategory] = useState<CategoryFilterId>("all");
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
+  const [isRandomModalOpen, setIsRandomModalOpen] = useState<boolean>(false);
 
   const fetchData = async () => {
     try {
@@ -99,6 +101,7 @@ export default function HomePage() {
         onSearchChange={setSearchQuery}
         lastUpdated={data?.metadata.last_updated}
         totalProducts={data?.metadata.total_products_indexed}
+        onOpenRandomSnack={() => setIsRandomModalOpen(true)}
       />
 
       <main className="mx-auto flex-1 w-full max-w-container px-4 py-6 sm:px-6 sm:py-8 space-y-6">
@@ -122,10 +125,20 @@ export default function HomePage() {
         <section className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
           <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
-                <Sparkles className="h-3.5 w-3.5" />
-                Radar Thị Trường Ăn Vặt TikTok Shop
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Radar Thị Trường Ăn Vặt TikTok Shop
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsRandomModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-gradient-to-r from-amber-50 to-orange-50 px-3 py-1 text-xs font-bold text-amber-800 shadow-xs hover:from-amber-100 hover:to-orange-100 transition-all active:scale-95 cursor-pointer"
+                >
+                  🎲 Hôm Nay Ăn Gì? (Quay Ngẫu Nhiên)
+                </button>
               </div>
+
               <h1 className="mt-3 text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
                 Theo Dõi Sản Phẩm & Doanh Thu Từng Ngày
               </h1>
@@ -227,14 +240,29 @@ export default function HomePage() {
         onClose={() => setSelectedProduct(null)}
       />
 
+      {/* Random Snack Modal */}
+      <RandomSnackModal
+        isOpen={isRandomModalOpen}
+        onClose={() => setIsRandomModalOpen(false)}
+        products={data?.leaderboard || []}
+        onSelectProduct={setSelectedProduct}
+      />
+
       {/* Sticky Bottom Mobile Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-2.5 flex items-center justify-between gap-2 shadow-lg sm:hidden">
+        <button
+          type="button"
+          onClick={() => setIsRandomModalOpen(true)}
+          className="shrink-0 inline-flex items-center gap-1 rounded-xl border border-amber-300 bg-gradient-to-r from-amber-50 to-orange-50 px-2.5 py-1.5 text-xs font-bold text-amber-800 shadow-xs active:scale-95"
+        >
+          🎲 Ăn Gì?
+        </button>
         <div className="flex items-center gap-2 min-w-0">
           <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-rose-100 text-sm">
             🔥
           </span>
           <span className="text-xs text-slate-800 font-medium truncate">
-            Mê ăn vặt? Follow @foodlenlut nhận deal
+            Deal Hot TikTok @foodlenlut
           </span>
         </div>
         <a

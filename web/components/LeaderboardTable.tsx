@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import {
-  ExternalLink,
   ShieldCheck,
   Star,
   ShoppingBag,
@@ -116,11 +115,11 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
             <tr>
               <th scope="col" className="py-4 pl-6 pr-3 w-16 text-center">Hạng</th>
               <th scope="col" className="py-4 px-4">Sản Phẩm & Cửa Hàng</th>
-              <th scope="col" className="py-4 px-4 w-44">Danh Mục</th>
+              <th scope="col" className="py-4 px-4 w-40">Danh Mục</th>
               <th scope="col" className="py-4 px-4 text-right w-28">Giá Bán</th>
               <th scope="col" className="py-4 px-4 text-right w-36">Đơn Hàng / 24h</th>
-              <th scope="col" className="py-4 px-4 text-right w-44">Doanh Thu 24h</th>
-              <th scope="col" className="py-4 pr-6 pl-4 text-center w-48">Video KOC & Sàn</th>
+              <th scope="col" className="py-4 px-4 text-right w-40">Doanh Thu 24h</th>
+              <th scope="col" className="py-4 pr-6 pl-4 text-center w-56">Video KOC & Sàn</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -221,13 +220,13 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                   </div>
                 </td>
 
-                {/* Action Buttons: Watch Video Modal + Direct TikTok Link */}
+                {/* Action Buttons: Watch Video Modal + Direct Buy Button */}
                 <td className="py-4 pr-6 pl-4 text-center">
-                  <div className="flex items-center justify-center gap-1.5">
+                  <div className="flex items-center justify-center gap-2">
                     <button
                       type="button"
                       onClick={() => onSelectProduct?.(item)}
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-purple-700 active:scale-95 transition-all"
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-3 py-2 text-xs font-bold text-white shadow-xs hover:bg-purple-700 active:scale-95 transition-all whitespace-nowrap"
                       title="Xem video review trực tiếp trong web"
                     >
                       <Play className="h-3 w-3 fill-white" />
@@ -235,12 +234,13 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                     </button>
 
                     <a
-                      href={item.video_url || item.affiliate_url}
+                      href={item.affiliate_url || item.video_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-7 w-7 items-center justify-center rounded-xl border border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
-                      title="Mở trên ứng dụng TikTok"
+                      className="inline-flex items-center gap-1 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 text-white font-bold px-3 py-2 text-xs shadow-sm hover:from-rose-600 hover:to-amber-600 transition-all active:scale-95 whitespace-nowrap"
+                      title="Mua ngay trên TikTok Shop"
                     >
+                      <span>🛒 Mua Ngay</span>
                       <ArrowUpRight className="h-3.5 w-3.5" />
                     </a>
                   </div>
@@ -272,6 +272,11 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                     <span className="text-[11px] font-medium text-slate-500 truncate">
                       {item.shop_name}
                     </span>
+                    {item.is_shop_official && (
+                      <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-50 px-1.5 py-0.2 text-[10px] font-bold text-emerald-700 border border-emerald-200">
+                        <ShieldCheck className="h-3 w-3" /> Mall
+                      </span>
+                    )}
                   </div>
                   <h4
                     onClick={() => onSelectProduct?.(item)}
@@ -279,6 +284,20 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
                   >
                     {item.product_name}
                   </h4>
+                  {item.creator_handle && (
+                    <div className="mt-1">
+                      <button
+                        type="button"
+                        onClick={() => onSelectProduct?.(item)}
+                        className="inline-flex items-center gap-1 text-[10px] font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-md"
+                      >
+                        <span>@{item.creator_handle}</span>
+                        {item.video_views && (
+                          <span className="font-lexend text-purple-900">({formatCompactNumber(item.video_views)} views)</span>
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -298,25 +317,33 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-1 gap-2">
-              <span className="font-lexend text-xs font-bold text-slate-700">
-                {formatVND(item.current_price)}
-              </span>
-              <div className="flex items-center gap-1.5">
+            {/* Price & Action Buttons */}
+            <div className="flex flex-col gap-2 pt-2 border-t border-slate-100">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-slate-500">Giá niêm yết:</span>
+                <span className="font-lexend text-sm font-bold text-slate-900">
+                  {formatVND(item.current_price)}
+                </span>
+              </div>
+
+              {/* 2 Ngang Hàng Buttons: Xem Video + 🛒 Mua Ngay */}
+              <div className="grid grid-cols-2 gap-2 pt-1">
                 <button
                   type="button"
                   onClick={() => onSelectProduct?.(item)}
-                  className="inline-flex items-center gap-1 rounded-xl bg-purple-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-purple-600 px-3 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-purple-700 active:scale-95 transition-all"
                 >
-                  <Play className="h-3 w-3 fill-white" />
+                  <Play className="h-3.5 w-3.5 fill-white" />
                   <span>Xem Video</span>
                 </button>
+
                 <a
-                  href={item.video_url || item.affiliate_url}
+                  href={item.affiliate_url || item.video_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 text-slate-600"
+                  className="inline-flex items-center justify-center gap-1 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 text-white font-bold px-3 py-2.5 text-xs shadow-sm hover:from-rose-600 hover:to-amber-600 transition-all active:scale-95 text-center whitespace-nowrap"
                 >
+                  <span>🛒 Mua Ngay</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
               </div>
