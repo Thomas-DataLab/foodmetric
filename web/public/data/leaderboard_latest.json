@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "last_updated": "2026-09-17 00:00:00",
+    "last_updated": "2026-09-17 13:56:53",
     "snapshot_date": "2026-09-17",
     "data_source_mode": "Live TikTok Competitor Affiliate Ingestion (CDP 9223 Verified)",
-    "total_products_indexed": 22,
-    "total_estimated_daily_gmv": 2806351000,
-    "total_estimated_daily_units": 42415
+    "total_products_indexed": 23,
+    "total_estimated_daily_gmv": 3037786000,
+    "total_estimated_daily_units": 47558
   },
   "categories": {
     "banh-trang": {
@@ -116,9 +116,9 @@
       "anomaly_flag": false
     },
     "top_category": {
-      "slug": "kho-cac-loai",
-      "name": "Khô Các Loại & Thịt Sấy",
-      "gmv": 670130000
+      "slug": "banh-trang",
+      "name": "Bánh Tráng & Muối Sốt",
+      "gmv": 719234000
     },
     "top_viral_hook": {
       "hook_text": "Bánh pía mini lava trứng muối tan chảy mix vị mochi",
@@ -230,6 +230,31 @@
     {
       "rank_overall": 5,
       "rank_in_category": 2,
+      "product_id": "tt_7474235228450589960",
+      "product_name": "Bánh tráng ngon mấy bà ơi",
+      "category_slug": "banh-trang",
+      "creator_handle": "ancungmaimai",
+      "creator_name": "Ăn cùng Mai Mai",
+      "creator_followers": "80.6K",
+      "video_url": "https://www.tiktok.com/@ancungmaimai/video/7474235228450589960",
+      "video_views": 5168776,
+      "video_likes": 80648,
+      "current_price": 45000,
+      "image_url": "/images/products/tt_7474235228450589960.jpg",
+      "affiliate_url": "https://www.tiktok.com/@ancungmaimai/video/7474235228450589960",
+      "product_rating": 4.9,
+      "review_count": 500,
+      "shop_id": "sp_ancungmaimai",
+      "shop_name": "Ăn cùng Mai Mai Shop",
+      "is_shop_official": false,
+      "historical_sold": 205063,
+      "estimated_daily_units": 5143,
+      "estimated_daily_gmv": 231435000,
+      "anomaly_flag": false
+    },
+    {
+      "rank_overall": 6,
+      "rank_in_category": 2,
       "product_id": "tt_kh_05",
       "product_name": "Mực Xé Hấp Nước Dừa Thơm Ngọt Mềm Sợi",
       "category_slug": "kho-cac-loai",
@@ -253,7 +278,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 6,
+      "rank_overall": 7,
       "rank_in_category": 1,
       "product_id": "tt_du_01",
       "product_name": "Cà Phê Muối Vị Phô Mai Hòa Tan Chuẩn Vị Huế (Hộp 10 gói)",
@@ -278,7 +303,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 7,
+      "rank_overall": 8,
       "rank_in_category": 2,
       "product_id": "tt_du_04",
       "product_name": "Trà Sữa Tự Pha Trân Châu Đường Đen Set 6 Ly Đậm Vị",
@@ -303,7 +328,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 8,
+      "rank_overall": 9,
       "rank_in_category": 3,
       "product_id": "tt_kh_01",
       "product_name": "Khô Gà Lá Chanh Xé Cay Đậm Vị Hũ 500g",
@@ -328,7 +353,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 9,
+      "rank_overall": 10,
       "rank_in_category": 3,
       "product_id": "tt_du_02",
       "product_name": "Đá Me Hạt Dẻo Khóm Đác Chua Ngọt Mát Lạnh",
@@ -353,8 +378,8 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 10,
-      "rank_in_category": 2,
+      "rank_overall": 11,
+      "rank_in_category": 3,
       "product_id": "tt_bt_01",
       "product_name": "Bánh Tráng Phơi Sương Sốt Bơ Tỏi Hành Phi (Set 500g)",
       "category_slug": "banh-trang",
@@ -378,7 +403,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 11,
+      "rank_overall": 12,
       "rank_in_category": 2,
       "product_id": "tt_bk_05",
       "product_name": "Bánh Đậu Xanh Mochi Trứng Muối Vỏ Mềm Thơm Béo",
@@ -403,7 +428,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 12,
+      "rank_overall": 13,
       "rank_in_category": 3,
       "product_id": "tt_bk_02",
       "product_name": "Kẹo Chuối Tươi Bến Tre Dẻo Thơm Mè Gừng",
@@ -428,7 +453,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 13,
+      "rank_overall": 14,
       "rank_in_category": 2,
       "product_id": "tt_cc_02",
       "product_name": "Da Heo Chiên Giòn Lắc Muối Ớt Hành Phi Không Ngấy",
@@ -453,7 +478,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 14,
+      "rank_overall": 15,
       "rank_in_category": 3,
       "product_id": "tt_cc_03",
       "product_name": "Da Heo Chiên Giòn Lắc Muối Ớt Hành Phi Không Ngấy",
@@ -478,7 +503,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 15,
+      "rank_overall": 16,
       "rank_in_category": 4,
       "product_id": "tt_kh_04",
       "product_name": "Mực Cán Tẩm Vị Cay Ngọt Loại 1 Nha Trang",
@@ -503,8 +528,8 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 16,
-      "rank_in_category": 3,
+      "rank_overall": 17,
+      "rank_in_category": 4,
       "product_id": "tt_bt_02",
       "product_name": "Bánh Tráng Cuộn Tôm Hành Muối Nhuyễn Siêu Cay",
       "category_slug": "banh-trang",
@@ -528,7 +553,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 17,
+      "rank_overall": 18,
       "rank_in_category": 4,
       "product_id": "tt_bk_04",
       "product_name": "Bánh Dừa Nướng Sầu Riêng Giòn Rụm Thơm Béo",
@@ -553,7 +578,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 18,
+      "rank_overall": 19,
       "rank_in_category": 4,
       "product_id": "tt_du_03",
       "product_name": "Trà Mãng Cầu Tươi Đậm Vị Giải Nhiệt Mùa Hè",
@@ -578,8 +603,8 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 19,
-      "rank_in_category": 4,
+      "rank_overall": 20,
+      "rank_in_category": 5,
       "product_id": "tt_bt_03",
       "product_name": "Bánh Tráng Xì Ke Muối Tỏi Tây Ninh Đặc Biệt",
       "category_slug": "banh-trang",
@@ -603,7 +628,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 20,
+      "rank_overall": 21,
       "rank_in_category": 4,
       "product_id": "tt_cc_04",
       "product_name": "Rong Biển Cháy Tỏi Mè Rang Giòn Tan Ăn Vặt Thảo Mộc",
@@ -628,7 +653,7 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 21,
+      "rank_overall": 22,
       "rank_in_category": 5,
       "product_id": "tt_bk_03",
       "product_name": "Kẹo Dồi Lạc Truyền Thống Vỏ Mỏng Giòn Nhân Đậu Phộng",
@@ -653,8 +678,8 @@
       "anomaly_flag": false
     },
     {
-      "rank_overall": 22,
-      "rank_in_category": 5,
+      "rank_overall": 23,
+      "rank_in_category": 6,
       "product_id": "tt_bt_04",
       "product_name": "Bánh Tráng Dẻo Tôm Cuốn Sốt Me Chua Ngọt",
       "category_slug": "banh-trang",
