@@ -76,6 +76,7 @@ export const VideoModal: React.FC<VideoModalProps> = ({ product, onClose }) => {
                 preload="auto"
                 controls
                 autoPlay
+                muted
                 playsInline
                 loop
                 onError={() => setNativeVideoError(true)}
